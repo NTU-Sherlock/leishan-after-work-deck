@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>下班後，我用 AI 做的三件事｜磊山社團課 2026.11.27</title>
+<meta name="description" content="文宣 × Codex：看盤、剪片、排旅遊，三段下班後的真實對話。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+/* ===========================================
+   標題字體：宙黑體 Zev Hei TC F 700 子集（SIL OFL 1.1，授權在 assets/fonts/）
+   改標題文字後要重跑子集化，否則新字會退回系統字
+   =========================================== */
+@font-face { font-family: 'Zev Hei Deck'; src: url('assets/fonts/zevhei-f-700-v2.woff2') format('woff2'); font-weight: 700; font-display: block; }
+/* 子集裡沒有的字（改過標題才會出現）用完整字型補上，平常不會載入 */
+@font-face { font-family: 'Zev Hei Full'; src: url('assets/fonts/zevhei-f-700-full.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+/* ===========================================
+   主題變數
+   =========================================== */
+:root {
+  --ink: #0f141c;
+  --night: #1f2530;
+  --panel: rgba(18, 23, 31, 0.62);
+  --panel-2: rgba(30, 37, 48, 0.78);
+  --orange: #e89d4f;
+  --orange-2: #ffd7ad;
+  --mint: #75c8c6;
+  --cream: #fff8ef;
+  --cream-2: #ffe9d2;
+  --muted: #b3bcc9;
+  --line: rgba(255, 248, 239, 0.13);
+  --red: #c4553a;
+
+  --display: 'Zev Hei Deck', 'Zev Hei Full', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --body: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --giga: clamp(3rem, min(11vw, 19vh), 11rem);
+  --mega: clamp(2rem, min(6vw, 10.5vh), 7.4rem);
+  --h2: clamp(1.3rem, min(3vw, 5.2vh), 3.6rem);
+  --lead: clamp(1rem, min(1.7vw, 3vh), 2rem);
+  --text: clamp(0.9rem, min(1.4vw, 2.5vh), 1.7rem);
+  --small: clamp(0.72rem, min(1vw, 1.85vh), 1.22rem);
+  --gap: clamp(0.5rem, 2vh, 1.5rem);
+  --pad-x: clamp(1.4rem, 5.5vw, 6.5rem);
+  --pad-y: clamp(1rem, 6vh, 4.5rem);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --snap: cubic-bezier(0.7, 0, 0.2, 1);
+
+  /* frontend-slides viewport-base 變數 */
+  --title-size: clamp(1.5rem, 5vw, 4rem); --h2-size: clamp(1.25rem, 3.5vw, 2.5rem); --h3-size: clamp(1rem, 2.5vw, 1.75rem);
+  --body-size: clamp(0.75rem, 1.5vw, 1.125rem); --small-size: clamp(0.65rem, 1vw, 0.875rem);
+  --slide-padding: clamp(1rem, 4vw, 4rem); --content-gap: clamp(0.5rem, 2vw, 2rem); --element-gap: clamp(0.25rem, 1vw, 1rem);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===========================================
+   VIEWPORT FITTING（frontend-slides viewport-base.css）
+   =========================================== */
+html, body { height: 100%; overflow-x: hidden; }
+.slide { width: 100vw; height: 100vh; height: 100dvh; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+.card, .container, .content-box { max-width: min(90vw, 1000px); max-height: min(80vh, 700px); }
+img, .image-container { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
+@media (max-height: 600px) { .nav-dots, .keyboard-hint, .decorative { display: none; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; } }
+
+/* ===========================================
+   DECK：一次一張，底下是一整片會變色的城市夜空
+   =========================================== */
+html, body { overflow: hidden; background: var(--ink); }
+body { color: var(--cream); font-family: var(--body); -webkit-font-smoothing: antialiased; }
+#sky { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; display: block; }
+.grain { position: fixed; inset: -50%; z-index: 1; pointer-events: none; opacity: 0.07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite; }
+@keyframes grain { 0%{transform:translate(0,0)} 25%{transform:translate(-3%,2%)} 50%{transform:translate(2%,-3%)} 75%{transform:translate(-2%,-1%)} 100%{transform:translate(0,0)} }
+.vignette { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse 120% 90% at 50% 45%, transparent 55%, rgba(0,0,0,0.45)); }
+.deck { position: fixed; inset: 0; z-index: 2; }
+.deck .slide { position: absolute; inset: 0; visibility: hidden; opacity: 0; }
+.deck .slide.active { visibility: visible; opacity: 1; }
+html:not(.vt) .deck .slide { transition: opacity 0.45s var(--ease), visibility 0s linear 0.45s; }
+html:not(.vt) .deck .slide.active { transition: opacity 0.45s var(--ease), visibility 0s; }
+
+/* ===========================================
+   轉場（View Transitions API；不支援時退回淡入）
+   =========================================== */
+::view-transition-group(hud) { animation: none; }
+::view-transition-old(hud) { display: none; }
+::view-transition-new(hud) { animation: none; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.9s; animation-timing-function: var(--snap); mix-blend-mode: normal; }
+html[data-trans="rise"][data-dir="fwd"]::view-transition-old(root) { animation-name: vt-out-up; }
+html[data-trans="rise"][data-dir="fwd"]::view-transition-new(root) { animation-name: vt-in-up; }
+html[data-dir="back"]::view-transition-old(root) { animation-name: vt-out-down; }
+html[data-dir="back"]::view-transition-new(root) { animation-name: vt-in-down; }
+html[data-trans="iris"][data-dir="fwd"]::view-transition-old(root) { animation: vt-dim 1.1s var(--snap) both; }
+html[data-trans="iris"][data-dir="fwd"]::view-transition-new(root) { animation: vt-iris 1.1s var(--snap) both; }
+html[data-trans="wipe"][data-dir="fwd"]::view-transition-old(root) { animation: vt-dim 0.95s var(--snap) both; }
+html[data-trans="wipe"][data-dir="fwd"]::view-transition-new(root) { animation: vt-wipe 0.95s var(--snap) both; }
+html[data-trans="zoom"][data-dir="fwd"]::view-transition-old(root) { animation: vt-zoom-out 0.9s var(--snap) both; }
+html[data-trans="zoom"][data-dir="fwd"]::view-transition-new(root) { animation: vt-zoom-in 0.9s var(--snap) both; }
+html[data-trans="blinds"][data-dir="fwd"]::view-transition-old(root) { animation: vt-dim 0.9s var(--snap) both; }
+html[data-trans="blinds"][data-dir="fwd"]::view-transition-new(root) { animation: vt-blinds 0.9s var(--snap) both; }
+html[data-trans="fade"]::view-transition-old(root) { animation: vt-fade-out 0.7s ease both; }
+html[data-trans="fade"]::view-transition-new(root) { animation: vt-fade-in 0.7s ease both; }
+@keyframes vt-out-up { to { transform: translateY(-9vh) scale(0.97); opacity: 0; filter: blur(6px); } }
+@keyframes vt-in-up { from { transform: translateY(12vh); opacity: 0; filter: blur(8px); } }
+@keyframes vt-out-down { to { transform: translateY(9vh); opacity: 0; } }
+@keyframes vt-in-down { from { transform: translateY(-12vh); opacity: 0; } }
+@keyframes vt-dim { to { opacity: 0.15; transform: scale(0.96); filter: blur(4px); } }
+@keyframes vt-iris { from { clip-path: circle(0% at 50% 55%); } to { clip-path: circle(150% at 50% 55%); } }
+@keyframes vt-wipe { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
+@keyframes vt-zoom-out { to { transform: scale(1.25); opacity: 0; filter: blur(10px); } }
+@keyframes vt-zoom-in { from { transform: scale(0.82); opacity: 0; filter: blur(10px); } }
+@keyframes vt-blinds { from { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); } to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); } }
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-fade-in { from { opacity: 0; } }
+
+/* ===========================================
+   HUD：左上時間章、右上章節、下方時間軸
+   =========================================== */
+.hud { view-transition-name: hud; position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+.hud-top { position: absolute; top: clamp(0.7rem, 3vh, 1.8rem); left: var(--pad-x); right: var(--pad-x); display: flex; justify-content: space-between; align-items: center; font: 500 var(--small) var(--mono); letter-spacing: 0.08em; color: var(--muted); }
+.hud-stamp { display: inline-flex; align-items: center; gap: 0.6em; color: var(--mint); transition: opacity 0.3s; }
+.hud-stamp::before { content: ''; width: 0.55em; height: 0.55em; border-radius: 50%; background: var(--mint); box-shadow: 0 0 10px var(--mint); animation: blink 1.6s infinite; }
+.hud-stamp.flip { animation: flip 0.6s var(--ease); }
+@keyframes flip { from { opacity: 0; transform: translateY(-8px); } }
+@keyframes blink { 50% { opacity: 0.25; } }
+.hud-bottom { position: absolute; left: var(--pad-x); right: 1rem; bottom: 0.7rem; display: flex; align-items: center; gap: 1rem; }
+.timeline { flex: 1; display: flex; gap: 6px; align-items: center; }
+.timeline .seg { position: relative; height: 3px; flex: var(--w); background: rgba(255,248,239,0.14); border-radius: 3px; overflow: hidden; }
+.timeline .seg i { position: absolute; inset: 0; width: var(--fill, 0%); background: var(--orange); transition: width 0.6s var(--ease); }
+.timeline .seg b { position: absolute; left: 0; top: -1.5em; font: 500 0.62rem var(--mono); color: rgba(255,248,239,0.4); white-space: nowrap; letter-spacing: 0.05em; }
+.timeline .seg.now b { color: var(--orange); }
+.hud-ctl { display: flex; align-items: center; gap: 0.4rem; pointer-events: auto; font: 500 var(--small) var(--mono); color: rgba(255,248,239,0.45); }
+.hud-ctl button { background: rgba(255,248,239,0.08); color: var(--cream); border: 0; border-radius: 8px; width: 2em; height: 2em; cursor: pointer; font-size: 1em; }
+.hud-ctl button:hover { background: rgba(232,157,79,0.35); }
+
+/* ===========================================
+   版面
+   =========================================== */
+.wrap { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: var(--gap); padding: calc(var(--pad-y) + 1.4rem) var(--pad-x) calc(var(--pad-y) + 1.2rem); }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(1rem, 3.5vw, 3.5rem); align-items: center; min-height: 0; }
+.two.even { grid-template-columns: 1fr 1fr; }
+.two.wl { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
+.stack { display: flex; flex-direction: column; gap: var(--gap); min-height: 0; }
+.center { align-items: center; text-align: center; }
+.kicker { font: 700 var(--small) var(--body); letter-spacing: 0.24em; color: var(--orange); }
+.giga { font: 700 var(--giga)/0.95 var(--display); letter-spacing: -0.02em; }
+.mega { font: 700 var(--mega)/1.12 var(--display); letter-spacing: -0.01em; text-shadow: 0 6px 40px rgba(0,0,0,0.35); }
+h2, .h2 { font: 700 var(--h2)/1.22 var(--display); }
+.lead { font-size: var(--lead); line-height: 1.6; color: var(--cream-2); max-width: 40em; }
+p, li { font-size: var(--text); line-height: 1.6; }
+.small { font-size: var(--small); color: var(--muted); line-height: 1.55; }
+em.hl { font-style: normal; color: var(--orange); }
+.mint { color: var(--mint); }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: clamp(0.8rem, 2vw, 1.6rem); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.tag { display: inline-block; align-self: flex-start; font: 700 var(--small) var(--body); letter-spacing: 0.06em; padding: 0.35em 0.9em; border-radius: 99px; background: rgba(117,200,198,0.16); color: var(--mint); }
+.tag.o { background: rgba(232,157,79,0.18); color: var(--orange); }
+.disclaimer { font-size: var(--small); color: rgba(255,233,210,0.78); }
+.phase { font: 700 var(--small) var(--mono); letter-spacing: 0.18em; color: var(--orange); display: inline-flex; align-items: center; gap: 0.7em; }
+.phase::before { content: ''; width: 2.2em; height: 2px; background: var(--orange); }
+
+/* 進場動畫：.r 依序浮上來 */
+.slide .r { opacity: 0; transform: translateY(26px); }
+.slide.active .r { animation: up 0.9s var(--ease) forwards; animation-delay: calc(var(--d, 0) * 0.13s + 0.15s); }
+@keyframes up { to { opacity: 1; transform: none; } }
+
+/* 標題逐字進場（JS 把 .kin 拆成 .ch） */
+.kin .ch { display: inline-block; opacity: 0; transform: translateY(0.55em) rotate(8deg); filter: blur(8px); }
+.slide.active .kin .ch { animation: chIn 0.8s var(--ease) forwards; animation-delay: calc(var(--i) * 0.035s + var(--kd, 0.1s)); }
+@keyframes chIn { to { opacity: 1; transform: none; filter: none; } }
+
+/* 分步出現 */
+.step { opacity: 0; transform: translateY(16px) scale(0.98); transition: opacity 0.5s var(--ease), transform 0.6s var(--ease); }
+.step.on { opacity: 1; transform: none; }
+
+/* ===========================================
+   章節開場：巨大數字＋時鐘
+   =========================================== */
+.opener .bignum { position: absolute; right: 3vw; bottom: 9vh; font: 700 clamp(10rem, 40vh, 28rem)/0.8 var(--display); color: transparent; -webkit-text-stroke: 2px rgba(255,248,239,0.2); z-index: 1; letter-spacing: -0.04em; pointer-events: none; }
+.slide.active.opener .bignum { animation: numIn 1.6s var(--ease) both; }
+@keyframes numIn { from { transform: translateY(20vh); opacity: 0; } }
+.clock { font: 700 clamp(3rem, min(13vw, 22vh), 12rem)/1 var(--display); color: rgba(255,248,239,0.14); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.opener .clock { position: absolute; right: 4vw; top: 7vh; }
+
+/* ===========================================
+   對話泡泡：Codex 會打字
+   =========================================== */
+.chat { display: flex; flex-direction: column; gap: clamp(0.45rem, 1.5vh, 1rem); min-height: 0; }
+.msg { position: relative; max-width: 88%; padding: 0.7em 1.05em; border-radius: 1.15em; font-size: var(--text); line-height: 1.55; }
+.msg .who { display: block; font: 700 0.66em var(--mono); letter-spacing: 0.06em; opacity: 0.75; margin-bottom: 0.25em; }
+.msg.me { align-self: flex-end; background: linear-gradient(135deg, #f0a95d, #e08c3c); color: #1f2530; border-bottom-right-radius: 0.3em; box-shadow: 0 10px 30px rgba(232,157,79,0.25); }
+.msg.ai { align-self: flex-start; background: var(--panel-2); border: 1px solid var(--line); border-bottom-left-radius: 0.3em; backdrop-filter: blur(10px); }
+.msg.sum { align-self: flex-start; background: rgba(18,23,31,0.5); border: 1.5px dashed rgba(255,248,239,0.3); color: var(--muted); }
+.msg.big { font-size: clamp(1rem, min(1.9vw, 3.3vh), 2.2rem); }
+.gloss { display: block; margin-top: 0.45em; font-size: 0.78em; color: var(--mint); }
+.msg.me .gloss { color: #26333d; opacity: 0.85; }
+.msg.me.step { transform: translateY(18px) scale(0.92); transform-origin: right bottom; }
+.msg.ai.step, .msg.sum.step { transform: translateY(18px) scale(0.92); transform-origin: left bottom; }
+.msg.step.on { transform: none; }
+.msg .tc { opacity: 0; transition: opacity 0.08s; }
+.msg .tc.v { opacity: 1; }
+.msg .gloss { transition: opacity 0.5s 0.1s; }
+.msg.typing .gloss, .msg.pending .gloss { opacity: 0; }
+.msg .dots { position: absolute; left: 1.05em; bottom: 0.75em; display: none; gap: 4px; }
+.msg.typing .dots { display: inline-flex; }
+.msg .dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: dot 1s infinite; }
+.msg .dots i:nth-child(2) { animation-delay: 0.15s; } .msg .dots i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes dot { 0%, 80%, 100% { transform: translateY(0); opacity: 0.4; } 40% { transform: translateY(-5px); opacity: 1; } }
+
+/* ===========================================
+   截圖、卡片
+   =========================================== */
+.shot { display: block; max-width: 100%; max-height: min(60vh, 640px); width: auto; height: auto; border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 24px 70px rgba(0,0,0,0.55); object-fit: contain; }
+figure { display: flex; flex-direction: column; gap: 0.5em; min-height: 0; align-items: flex-start; }
+figcaption { font-size: var(--small); color: var(--muted); line-height: 1.5; }
+.cards { display: grid; gap: clamp(0.6rem, 1.6vw, 1.2rem); }
+.c2 { grid-template-columns: 1fr 1fr; } .c3 { grid-template-columns: repeat(3, 1fr); } .c4 { grid-template-columns: repeat(4, 1fr); }
+.card h3 { font: 700 clamp(1rem, min(1.8vw, 3.2vh), 1.65rem)/1.3 var(--display); margin-bottom: 0.35em; }
+.card { max-height: none; }
+.num { display: block; font: 700 clamp(1.4rem, min(2.6vw, 4.6vh), 2.6rem)/1 var(--display); color: var(--orange); margin-bottom: 0.3em; }
+.quote { font: 700 clamp(1.2rem, min(2.7vw, 4.8vh), 3.1rem)/1.4 var(--display); }
+.quote .src { display: block; margin-top: 0.7em; font: 500 var(--small) var(--body); color: var(--muted); }
+.btn-live { display: inline-flex; align-items: center; gap: 0.5em; font: 700 var(--small) var(--body); color: #1f2530; background: var(--orange); padding: 0.5em 1.1em; border-radius: 99px; text-decoration: none; align-self: flex-start; pointer-events: auto; box-shadow: 0 8px 24px rgba(232,157,79,0.35); }
+
+/* 下班清單 */
+.five { list-style: none; display: grid; gap: clamp(0.4rem, 1.2vh, 0.8rem); }
+.five li { display: grid; grid-template-columns: 2.2em 1fr auto; align-items: center; gap: 0.8em; padding: 0.55em 1em; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); font-size: var(--lead); transition: opacity 0.6s, transform 0.6s var(--ease), box-shadow 0.6s, border-color 0.6s; backdrop-filter: blur(10px); }
+.five li b { font: 700 1.15em var(--display); color: var(--orange); }
+.five li .pick { opacity: 0; transform: scale(0.6); transition: 0.5s var(--ease); }
+.five.picked li.off { opacity: 0.3; transform: scale(0.97); }
+.five.picked li:not(.off) { border-color: rgba(232,157,79,0.6); box-shadow: 0 0 0 1px rgba(232,157,79,0.3), 0 12px 40px rgba(232,157,79,0.18); }
+.five.picked li:not(.off) .pick { opacity: 1; transform: none; }
+.five li span.note { font-size: 0.66em; color: var(--muted); }
+
+/* ===========================================
+   WOW：圖上標註（AI 畫的東西）
+   =========================================== */
+.chartwrap { position: relative; display: block; width: fit-content; max-width: 100%; margin: 0 auto; border-radius: 14px; overflow: hidden; box-shadow: 0 30px 90px rgba(0,0,0,0.6); border: 1px solid var(--line); }
+.chartwrap img { display: block; max-width: 100%; max-height: min(58vh, 640px); width: auto; height: auto; }
+.chartwrap .scan { position: absolute; top: 0; bottom: 0; width: 18%; left: -20%; background: linear-gradient(90deg, transparent, rgba(232,157,79,0.28), transparent); mix-blend-mode: screen; }
+.slide.active .chartwrap .scan { animation: scan 2.2s var(--snap) 0.4s both; }
+@keyframes scan { to { left: 105%; } }
+.mark { position: absolute; left: var(--x); top: var(--y); width: var(--w); height: var(--h); border: 2.5px solid var(--orange); border-radius: 8px; box-shadow: 0 0 0 4000px rgba(0,0,0,0); opacity: 0; transform: scale(1.3); }
+.mark.on { opacity: 1; transform: none; transition: 0.6s var(--ease); animation: pulse 2s 0.6s infinite; }
+.mark.line { height: 0; border-width: 2px 0 0; border-style: dashed; border-radius: 0; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(232,157,79,0.25); } }
+.mark span { position: absolute; white-space: nowrap; font: 700 var(--small) var(--body); background: var(--orange); color: #1f2530; padding: 0.3em 0.75em; border-radius: 99px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+.mark.t span { bottom: calc(100% + 8px); right: 0; }
+.mark.b span { top: calc(100% + 8px); right: 0; }
+.mark.l span { top: -2.1em; left: 0; }
+
+/* 數字牆 */
+.counter-wall { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(0.6rem, 1.6vw, 1.2rem); }
+.counter { display: flex; flex-direction: column; gap: 0.35em; }
+.counter .n { font: 700 clamp(2.2rem, min(5.4vw, 9.5vh), 5.6rem)/1 var(--display); color: var(--orange); font-variant-numeric: tabular-nums; text-shadow: 0 0 40px rgba(232,157,79,0.35); }
+.counter .u { font: 700 var(--lead) var(--display); }
+.counter p { font-size: var(--small); color: var(--muted); }
+
+/* 懸念頁 */
+.suspense .line { font: 700 clamp(2rem, min(6vw, 10vh), 6rem)/1.2 var(--display); }
+.suspense .line .tc { opacity: 0; }
+.suspense .line .tc.v { opacity: 1; }
+.caret { display: inline-block; width: 0.08em; height: 0.9em; background: var(--orange); vertical-align: -0.1em; margin-left: 0.05em; animation: blink 0.9s infinite; }
+
+/* 路徑步驟（怎麼做） */
+.path { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(0.5rem, 1.4vw, 1rem); position: relative; }
+.path::before { content: ''; position: absolute; left: 3%; right: 3%; top: 1.6em; height: 2px; background: linear-gradient(90deg, var(--orange), var(--mint)); transform-origin: left; transform: scaleX(0); }
+.slide.active .path::before { animation: grow 1.4s var(--snap) 0.3s forwards; }
+@keyframes grow { to { transform: scaleX(1); } }
+.path .node { position: relative; padding-top: 3.4em; }
+.path .node .dot { position: absolute; top: 0.6em; left: 0; width: 2em; height: 2em; border-radius: 50%; background: var(--ink); border: 2px solid var(--orange); display: grid; place-items: center; font: 700 var(--small) var(--display); color: var(--orange); }
+.path .node h3 { font: 700 clamp(1rem, min(1.6vw, 2.9vh), 1.5rem)/1.3 var(--display); margin-bottom: 0.3em; }
+.path .node p { font-size: var(--small); color: var(--muted); line-height: 1.55; }
+
+/* 前後對照滑桿 */
+.ba { position: relative; display: inline-block; max-width: 100%; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 24px 70px rgba(0,0,0,0.55); --pos: 50%; touch-action: none; user-select: none; pointer-events: auto; cursor: ew-resize; }
+.ba img { display: block; max-width: 100%; max-height: min(56vh, 600px); width: auto; height: auto; }
+.ba .after { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; clip-path: inset(0 0 0 var(--pos)); }
+.ba .bar { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 3px; margin-left: -1.5px; background: var(--orange); pointer-events: none; box-shadow: 0 0 16px var(--orange); }
+.ba .knob { position: absolute; top: 50%; left: var(--pos); width: 2.6em; height: 2.6em; margin: -1.3em 0 0 -1.3em; border-radius: 50%; background: var(--orange); color: #1f2530; display: grid; place-items: center; font-weight: 700; pointer-events: none; font-size: var(--small); }
+.ba .lab { position: absolute; top: 0.7em; padding: 0.25em 0.7em; border-radius: 99px; background: rgba(18,23,31,0.85); font: 700 var(--small) var(--body); }
+.ba .lab.l { left: 0.7em; } .ba .lab.rt { right: 0.7em; color: var(--orange); }
+.slide.active .ba.auto { animation: baSweep 3.2s var(--snap) 0.8s 1 both; }
+.slide.active .ba.auto.r { animation: up 0.9s var(--ease) 0.15s forwards, baSweep 3.2s var(--snap) 1s 1 both; }
+@keyframes baSweep { 0% { --pos: 50%; } 35% { --pos: 92%; } 70% { --pos: 8%; } 100% { --pos: 50%; } }
+@property --pos { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
+
+/* 爆炸圖（剪片） */
+.burst { position: relative; height: min(52vh, 480px); width: 100%; }
+.burst .core { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: clamp(9rem, 22vw, 18rem); aspect-ratio: 16/10; border-radius: 16px; background: linear-gradient(135deg, #2a3442, #1a2029); border: 1px solid rgba(232,157,79,0.5); display: grid; place-items: center; text-align: center; box-shadow: 0 0 60px rgba(232,157,79,0.25); z-index: 2; }
+.burst .core .play { width: 3.2em; height: 3.2em; border-radius: 50%; background: var(--orange); display: grid; place-items: center; margin: 0 auto 0.4em; color: #1f2530; font-size: var(--small); }
+.burst .core b { display: block; font: 700 var(--lead) var(--display); }
+.burst .core small { font: 500 var(--small) var(--mono); color: var(--muted); }
+.slide.active .burst .core { animation: corePop 0.9s var(--ease) both; }
+@keyframes corePop { from { transform: translate(-50%, -50%) scale(0.4); opacity: 0; } 60% { transform: translate(-50%, -50%) scale(1.08); } }
+.burst .chip { position: absolute; left: 50%; top: 50%; padding: 0.6em 1em; border-radius: 14px; background: var(--panel-2); border: 1px solid var(--line); font: 700 var(--text) var(--display); white-space: nowrap; box-shadow: 0 14px 40px rgba(0,0,0,0.45); backdrop-filter: blur(10px);
+  transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
+.burst .chip small { display: block; font: 500 var(--small) var(--body); color: var(--muted); margin-top: 0.15em; }
+.slide.active .burst .chip { animation: fly 1.1s var(--ease) forwards; animation-delay: calc(0.7s + var(--k) * 0.12s); }
+@keyframes fly { to { opacity: 1; transform: translate(-50%, -50%) translate(calc(cos(var(--a)) * min(34vw, 500px)), calc(sin(var(--a)) * min(19vh, 190px))) scale(1); } }
+.burst .ring { position: absolute; left: 50%; top: 50%; width: clamp(9rem, 22vw, 18rem); aspect-ratio: 1; border-radius: 50%; border: 1px solid rgba(232,157,79,0.35); transform: translate(-50%, -50%) scale(0.6); opacity: 0; pointer-events: none; }
+.slide.active .burst .ring { animation: ring 3.2s ease-out infinite; animation-delay: calc(0.6s + var(--k) * 1.05s); }
+@keyframes ring { 0% { opacity: 0.8; transform: translate(-50%, -50%) scale(0.6); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(3.2); } }
+
+/* 剪映畫面慢推 */
+.ken { position: relative; overflow: hidden; border-radius: 16px; border: 1px solid var(--line); box-shadow: 0 30px 90px rgba(0,0,0,0.6); width: min(100%, calc(56vh * 1.7)); align-self: center; }
+.ken img { display: block; width: 100%; height: auto; max-height: none; transform-origin: 60% 85%; }
+.slide.active .ken img { animation: kenburns 9s ease-out both; }
+@keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.22); } }
+.ken .pin { position: absolute; left: var(--x); top: var(--y); font: 700 var(--small) var(--body); background: var(--orange); color: #1f2530; padding: 0.35em 0.85em; border-radius: 99px; opacity: 0; transform: translateY(10px); box-shadow: 0 10px 24px rgba(0,0,0,0.45); }
+.slide.active .ken .pin { animation: up 0.7s var(--ease) forwards; animation-delay: calc(1.2s + var(--k) * 0.5s); }
+
+/* 筆電＋手機（自動捲動的網站） */
+.devices { --dh: min(56vh, 540px); --lw: min(52vw, calc((var(--dh) - 22px) * 1.5)); position: relative; display: flex; align-items: flex-end; justify-content: center; gap: 0; height: var(--dh); }
+.laptop { position: relative; width: var(--lw); }
+.laptop .lid { background: #11151b; border-radius: 16px 16px 6px 6px; padding: 2.2% 2.2% 3%; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 30px 80px rgba(0,0,0,0.6); }
+.laptop .base { height: clamp(10px, 1.6vh, 16px); background: linear-gradient(#2a3039, #161a20); border-radius: 0 0 18px 18px; margin: 0 -6%; }
+.screen { position: relative; overflow: hidden; aspect-ratio: 16/10; border-radius: 4px; background: #f4f3ef; }
+.screen img { display: block; width: 100%; height: auto; max-height: none; max-width: none; }
+.slide.active .screen img { animation: scrolly var(--dur, 18s) ease-in-out 0.8s infinite alternate; }
+@keyframes scrolly { to { transform: translateY(var(--travel, 0px)); } }
+.phone { position: absolute; right: max(1vw, calc(50% - var(--lw) / 2 - 7vw)); bottom: -1vh; width: min(14vw, calc(var(--dh) * 0.31)); background: #0c0f13; border-radius: 26px; padding: 8px; border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 30px 70px rgba(0,0,0,0.7); }
+.phone .screen { aspect-ratio: 9/19.5; border-radius: 19px; }
+.phone .notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 34%; height: 14px; border-radius: 10px; background: #0c0f13; z-index: 2; }
+
+/* 蓋章（旅遊保險） */
+.stampbox { position: relative; display: inline-block; }
+.stampbox img { display: block; max-height: min(50vh, 520px); border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 24px 70px rgba(0,0,0,0.55); }
+.stampbox .hilite { position: absolute; left: 2%; top: 15.5%; width: 0; height: 11.5%; background: rgba(232,157,79,0.32); border-radius: 6px; mix-blend-mode: multiply; transition: width 0.9s var(--snap); }
+.stampbox.hit .hilite { width: 84%; }
+.stampbox .seal { position: absolute; right: 3%; top: 4%; width: clamp(5rem, 11vw, 9rem); aspect-ratio: 1; border-radius: 50%; border: 4px solid var(--red); color: var(--red); display: grid; place-items: center; text-align: center; font: 700 var(--small)/1.25 var(--display); background: rgba(255,248,239,0.9); opacity: 0; transform: scale(3) rotate(-30deg); }
+.stampbox .seal b { display: block; font-size: 1.9em; }
+.stampbox.hit .seal { animation: slam 0.45s cubic-bezier(.2,1.6,.4,1) forwards; }
+.stampbox.hit img { animation: shake 0.4s 0.38s; }
+@keyframes slam { to { opacity: 1; transform: scale(1) rotate(-12deg); } }
+@keyframes shake { 20% { transform: translate(-4px, 2px); } 40% { transform: translate(4px, -2px); } 60% { transform: translate(-2px, 1px); } 80% { transform: translate(2px, 0); } }
+
+/* 猜猜看 */
+.reveal-wrap { position: relative; display: block; width: fit-content; max-width: 100%; justify-self: start; }
+.reveal-wrap img { display: block; max-height: min(64vh, 680px); border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 24px 70px rgba(0,0,0,0.55); }
+.reveal-wrap .cover { position: absolute; background: var(--orange); color: #1f2530; border-radius: 99px; display: grid; place-items: center; font: 700 var(--small) var(--body); transition: opacity 0.4s, transform 0.5s var(--ease); }
+.reveal-wrap.open .cover { opacity: 0; transform: scale(1.8) rotate(20deg); }
+.reveal-wrap .glow { position: absolute; left: 66.6%; top: 24%; width: 30.2%; height: 75.5%; border-radius: 18px; box-shadow: 0 0 0 3px var(--orange), 0 0 60px rgba(232,157,79,0.7); opacity: 0; transition: opacity 0.6s 0.2s; }
+.reveal-wrap.open .glow { opacity: 1; }
+
+/* 指令積木 */
+.builder { background: var(--panel-2); border: 1px solid rgba(232,157,79,0.35); border-radius: 20px; padding: clamp(0.9rem, 2vw, 1.6rem); display: flex; flex-direction: column; gap: 0.65em; pointer-events: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.4); backdrop-filter: blur(12px); }
+.builder .label { font: 700 var(--small) var(--body); color: var(--orange); letter-spacing: 0.1em; }
+.builder .sentence { font-size: var(--lead); line-height: 2; }
+.builder select { font: 700 1em var(--body); color: #1f2530; background: var(--orange-2); border: 0; border-radius: 8px; padding: 0.1em 0.4em; margin: 0 0.15em; cursor: pointer; }
+.builder .rule { font-size: var(--small); color: var(--mint); }
+.builder button { align-self: flex-start; font: 700 var(--small) var(--body); background: var(--orange); color: #1f2530; border: 0; border-radius: 99px; padding: 0.5em 1.2em; cursor: pointer; }
+.builder button.done { background: var(--mint); }
+
+/* 情境卡 */
+.scene { display: flex; flex-direction: column; gap: 0.4em; }
+.scene .emo { font: 700 clamp(1.8rem, min(3.4vw, 6vh), 3.2rem)/1 var(--display); color: var(--orange); }
+.scene h3 { font: 700 clamp(1rem, min(1.7vw, 3vh), 1.6rem)/1.3 var(--display); }
+.scene p { font-size: var(--small); color: var(--muted); }
+
+/* 講者備註 */
+.notes { display: none; }
+.notes-panel { position: fixed; left: 1rem; right: 1rem; bottom: 2.8rem; max-height: 34vh; overflow: auto; background: rgba(12,15,20,0.95); border: 1px solid rgba(232,157,79,0.4); border-radius: 14px; padding: 1rem 1.3rem; font-size: clamp(0.85rem, 1.15vw, 1.1rem); line-height: 1.7; color: var(--cream-2); z-index: 60; display: none; }
+.notes-panel.show { display: block; }
+.notes-panel h4 { font: 700 0.8em var(--mono); color: var(--orange); letter-spacing: 0.08em; margin-bottom: 0.4em; }
+.notes-panel li { font-size: 1em; margin-left: 1.2em; }
+
+/* 安靜模式（按 M）與檢查模式（?qa） */
+html.calm *, html.calm *::before, html.calm *::after { animation: none !important; transition: none !important; }
+html.calm .r, html.calm .kin .ch, html.calm .step.on, html.calm .msg .tc { opacity: 1; transform: none; filter: none; }
+html.qa .r, html.qa .kin .ch, html.qa .step, html.qa .msg .tc, html.qa .suspense .tc, html.qa .mark, html.qa .burst .chip, html.qa .ken .pin { opacity: 1 !important; transform: none !important; filter: none !important; animation: none !important; }
+html.qa .burst .chip { transform: translate(-50%, -50%) translate(calc(cos(var(--a)) * min(34vw, 500px)), calc(sin(var(--a)) * min(19vh, 190px))) !important; }
+html.qa .burst .core { transform: translate(-50%, -50%) !important; animation: none !important; }
+html.qa .grain, html.qa .vignette { display: none; }
+html.calm .burst .chip { opacity: 1; transform: translate(-50%, -50%) translate(calc(cos(var(--a)) * min(34vw, 500px)), calc(sin(var(--a)) * min(19vh, 190px))) !important; }
+html.calm .burst .core { transform: translate(-50%, -50%); }
+html.calm .ken .pin, html.calm .mark.on, html.calm .suspense .tc { opacity: 1; transform: none; }
+html.qa .path::before, html.calm .path::before { transform: scaleX(1); }
+html.calm .burst .ring, html.calm .chartwrap .scan, html.calm .grain { display: none; }
+html.qa .stampbox .seal, html.calm .stampbox.hit .seal { opacity: 1; transform: scale(1) rotate(-12deg); animation: none; }
+html.qa .stampbox.hit .hilite, html.calm .stampbox.hit .hilite { width: 84%; }
+
+@media (max-width: 900px) {
+  .two, .two.even, .two.wl { grid-template-columns: 1fr; }
+  .c3, .c4, .counter-wall, .path { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="vignette"></div>
+<div class="grain"></div>
+
+<main class="deck" id="deck">
+
+<!-- ============================================================
+     開場
+     ============================================================ -->
+<section class="slide" data-sky="dusk" data-trans="fade" data-stamp="打卡　18:30" data-sec="開場">
+  <div class="wrap">
+    <div class="clock" data-roll="18:30" style="position:absolute;right:4vw;top:7vh">18:30</div>
+    <p class="kicker r">打卡之後　·　AFTER WORK</p>
+    <h1 class="mega kin" style="--kd:.35s">下班後，<br>我用 AI 做的三件事</h1>
+    <p class="lead r" style="--d:5">看盤、剪片、排旅遊，三件都是我自己的生活。<br><span class="small" style="color:var(--cream-2)">文宣 × Codex　｜　磊山社團課　2026.11.27</span></p>
+  </div>
+  <aside class="notes">
+    <li>先按 F 全螢幕。→／空白鍵往下；同一張的東西會一個一個出來；Codex 打字時再按一下會直接打完。← 退回，N 備註，M 關掉所有動畫。</li>
+    <li>開場：前面幾堂都在教客戶卡、會議紀錄。最後一堂社團課，換個口味，講我下班後自己怎麼用。</li>
+    <li>每一段都是真實對話，原話直接放上來。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="dusk" data-trans="rise" data-stamp="作業回覆　9 月～10 月" data-sec="開場">
+  <div class="wrap">
+    <h2 class="kin">你們上課說過、作業寫過的兩句話</h2>
+    <div class="cards c2">
+      <div class="panel r" style="--d:2"><p class="quote">「每天可以看，通知我知道美元的匯率的走勢」<span class="src">10/2 社團課，一位同學</span></p></div>
+      <div class="panel r" style="--d:3"><p class="quote">「AI真的強到太可怕了，這兩天幾乎每天五小時容量連續用完…實在太過癮了」<span class="src">作業 #2，一位同學</span></p></div>
+    </div>
+    <p class="lead step">今天這堂，我分享自己下班後拿 Codex 做的事。</p>
+  </div>
+  <aside class="notes">
+    <li>念這兩句，問台下：「這是誰寫的？」笑一下就好，不用點名。</li>
+    <li>第一句是匯率。今天第一段就跟「看走勢」有關。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="dusk" data-trans="rise" data-stamp="文宣的下班清單" data-sec="開場">
+  <div class="wrap">
+    <h2 class="kin">我下班後拿 Codex 做的五件事</h2>
+    <ol class="five r" style="--d:3" id="fiveList">
+      <li><b>1</b>看盤：請它陪我盯走勢、幫我挑毛病<span class="tag o pick">今天講</span></li>
+      <li><b>2</b>剪片：線上直播錄完，交給它跟剪映<span class="tag o pick">今天講</span></li>
+      <li class="off"><b>3</b>整理會議紀錄<span class="note">第一堂教過了</span></li>
+      <li><b>4</b>排旅遊：家族旅行、朋友出國<span class="tag o pick">今天講</span></li>
+      <li class="off"><b>5</b>匹克球部落格網站<span class="note">下課想聽再抓我</span></li>
+    </ol>
+    <p class="lead step" data-add="#fiveList:picked">今天挑你們最可能用到的三件。</p>
+  </div>
+  <aside class="notes">
+    <li>按 → 會把今天要講的三件亮起來。</li>
+    <li>每一段都是同一個順序：先看成果 → 為什麼重要 → 我怎麼做 → 你可以用在哪 → 今晚怎麼開始 → 最後重播真實對話。</li>
+  </aside>
+</section>
+
+<!-- ============================================================
+     01 看盤
+     ============================================================ -->
+<section class="slide opener" data-sky="night" data-trans="iris" data-stamp="11/21 → 11/25　五天" data-sec="01 看盤">
+  <div class="bignum">01</div>
+  <div class="wrap">
+    <div class="clock" data-roll="23:22" style="position:absolute;right:4vw;top:7vh">23:22</div>
+    <p class="kicker r">01　看盤</p>
+    <h1 class="mega kin" style="--kd:.3s">請 AI 陪我盯盤</h1>
+    <p class="lead r" style="--d:4">11/21 到 11/25 這五天，我把看盤交給 Codex 一起做。</p>
+    <p class="disclaimer r" style="--d:5">以下是我自己的學習紀錄，不構成投資建議。AI 負責看圖、畫線、算數字、給參考；要不要買、什麼時候買，都是我自己決定，它沒有幫我下單。</p>
+  </div>
+  <aside class="notes">
+    <li>先講免責：學習紀錄，AI 不碰下單。</li>
+    <li>接下來先給你們看成果。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="zoom" data-stamp="11/21 週六　16:05" data-sec="01 看盤">
+  <div class="wrap">
+    <p class="phase r">成果</p>
+    <h2 class="kin">這張圖上的框、線和筆記，都是 AI 畫的</h2>
+    <div class="chartwrap r" style="--d:2">
+      <img src="assets/stock-position.jpg" alt="TradingView 價格圖，AI 放上了買賣框、支撐壓力線與分析筆記">
+      <div class="scan"></div>
+      <div class="mark step b" style="--x:84.2%;--y:59.5%;--w:12.2%;--h:17%"><span>買賣框：進場、停損、停利</span></div>
+      <div class="mark line step l" style="--x:1%;--y:71.4%;--w:80%;--h:0"><span>支撐、壓力線</span></div>
+      <div class="mark step t" style="--x:42.6%;--y:19.6%;--w:32.2%;--h:20.5%"><span>寫在圖上的分析筆記</span></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>按 → 三次，一個一個圈出來：買賣框、支撐壓力線、分析筆記。這些都是它在我的 TradingView 上放的。</li>
+    <li>圖上的均線、成交量是我原本就開著的指標，不算它的。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="rise" data-stamp="11/21 → 11/25" data-sec="01 看盤">
+  <div class="wrap">
+    <p class="phase r">成果</p>
+    <h2 class="kin">五天裡，它幫我做了這些</h2>
+    <div class="counter-wall">
+      <div class="panel counter r" style="--d:2"><span class="n" data-count="2">2</span><span class="u">次沒回應</span><p>它就自己停下來，因為我睡著了</p></div>
+      <div class="panel counter r" style="--d:3"><span class="n" data-count="5">5</span><span class="u">分鐘</span><p>盯一次盤，回報給我：觀察、建議進場點、停損停利</p></div>
+      <div class="panel counter r" style="--d:4"><span class="n" data-count="8928">8,928</span><span class="u">筆價格</span><p>一個月的資料，一句話就拿來模擬「當時照這個方法做會怎樣」</p></div>
+      <div class="panel counter r" style="--d:5"><span class="n" data-count="61">61</span><span class="u">天的資料</span><p>做成一份新手也看得懂的互動報告</p><a class="btn-live" href="assets/demo-btc-report.html" target="_blank" rel="noopener">現場打開 ↗</a></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>數字會跑，讓大家先「哇」一下。</li>
+    <li>互動報告是離線檔，點「現場打開」就能滑給大家看。</li>
+  </aside>
+</section>
+
+<section class="slide suspense" data-sky="deep" data-trans="fade" data-stamp="11/23 週一　深夜" data-sec="01 看盤">
+  <div class="wrap center" style="justify-content:center">
+    <p class="line autotype">我買進後問它，它說太早了。</p>
+    <p class="lead step" style="color:var(--muted)">當天晚上，價格真的大跌。<br>我有沒有聽它的？最後揭曉。</p>
+  </div>
+  <aside class="notes">
+    <li>停一拍。這句會自己打出來。</li>
+    <li>按 → 出現下一句，留懸念，先不講答案。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="rise" data-stamp="為什麼重要" data-sec="01 看盤">
+  <div class="wrap">
+    <p class="phase r">為什麼重要</p>
+    <h2 class="kin">下班才有空看盤。<br>一個人看圖，只看得到自己想看的</h2>
+    <div class="cards c3">
+      <div class="panel r" style="--d:3"><span class="num">幫我盯</span><p>每 5 分鐘回報一次，我可以去忙別的；我睡了它就停。</p></div>
+      <div class="panel r" style="--d:4"><span class="num">挑毛病</span><p>我請它「批判性思考」，它就要找我這筆單的問題。</p></div>
+      <div class="panel r" style="--d:5"><span class="num">先問它</span><p>下單前請它算：最多賠多少、可能賺多少。</p></div>
+    </div>
+    <p class="small r" style="--d:6">三個詞先講好：<b class="mint">以太幣</b>＝一種 24 小時交易的加密貨幣　<b class="mint">前低</b>＝最近一次跌到的最低價，像地板　<b class="mint">停損</b>＝買之前先決定跌到哪裡就賣</p>
+  </div>
+  <aside class="notes">
+    <li>台下大多沒碰過加密貨幣，三個詞先講白話。</li>
+    <li>為什麼用以太幣練：上班時間沒空看台股，它 24 小時都開。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="rise" data-stamp="我怎麼做" data-sec="01 看盤">
+  <div class="wrap">
+    <p class="phase r">我怎麼做</p>
+    <h2 class="kin">四個步驟，都是邊用邊講出來的</h2>
+    <div class="path">
+      <div class="node r" style="--d:3"><span class="dot">1</span><h3>用我原本的看盤網站</h3><p>TradingView 我本來就在用。它提議另外做一個看板，我說不要，直接在我的圖上畫。</p></div>
+      <div class="node r" style="--d:4"><span class="dot">2</span><h3>嫌它，直到看得懂</h3><p>五條線太亂，我說「太多線了」。最後只留進場、停損、停利。</p></div>
+      <div class="node r" style="--d:5"><span class="dot">3</span><h3>設好提醒，讓它盯</h3><p>每 5 分鐘看一次；連兩次沒回應就自己停。</p></div>
+      <div class="node r" style="--d:6"><span class="dot">4</span><h3>做順了，存成專案</h3><p>請它把當天的討論整理成一個專案，下次一句話叫回來。</p></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>第 4 步就是你們學過的 skill：做順一次就存起來。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="zoom" data-stamp="11/21 週六　15:47" data-sec="01 看盤">
+  <div class="wrap">
+    <div class="two wl">
+      <div class="stack" style="align-items:flex-start">
+        <div class="ba auto r" data-ba="">
+          <img src="assets/stock-lines-before.jpg" alt="AI 第一版：在價格圖上畫了五條水平線，看起來很亂">
+          <img class="after" src="assets/stock-lines-after.jpg" alt="改完：只剩上下兩條線">
+          <span class="bar"></span><span class="knob">⇆</span>
+          <span class="lab l">第一版：五條線</span><span class="lab rt">改完：兩條</span>
+        </div>
+        <p class="small">拖曳中間的橘線比對（或按 B）</p>
+      </div>
+      <div class="stack">
+        <p class="phase r">我怎麼做</p>
+        <h2 class="kin">它畫了五條線，<br>我只回一句</h2>
+        <div class="chat"><div class="msg me r" style="--d:4"><span class="who">我　15:47</span>「太多線了，沒意義，應該要提供進出場建議，盈虧比計算」</div></div>
+        <p class="small r" style="--d:5">盈虧比：可能賺的空間 ÷ 可能賠的空間。數字越大，這筆越划算。</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>滑桿會自己左右掃一次，也可以現場拖。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="rise" data-stamp="你也用得到" data-sec="01 看盤">
+  <div class="wrap">
+    <p class="phase r">用在哪裡</p>
+    <h2 class="kin">有走勢圖的東西，都能這樣問</h2>
+    <div class="cards c4">
+      <div class="panel scene r" style="--d:2"><span class="emo">$</span><h3>美元匯率</h3><p>上課有同學說想要每天通知。</p></div>
+      <div class="panel scene r" style="--d:3"><span class="emo">0050</span><h3>台股、ETF</h3><p>收盤後看一眼，請它講支持和反對的理由。</p></div>
+      <div class="panel scene r" style="--d:4"><span class="emo">%</span><h3>基金淨值</h3><p>手上的基金最近在漲還是在跌、為什麼。</p></div>
+      <div class="panel scene r" style="--d:5"><span class="emo">Au</span><h3>黃金</h3><p>想買之前，先請它當反方。</p></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>不用碰加密貨幣，你們最常看的匯率、0050 都一樣。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="rise" data-stamp="今晚就能試" data-sec="01 看盤">
+  <div class="wrap">
+    <p class="phase r">怎麼開始</p>
+    <h2 class="kin">今晚就能試：組一句話，複製貼上</h2>
+    <div class="builder r" style="--d:3" data-builder="">
+      <span class="label">指令積木｜ChatGPT 或 Codex 都能用</span>
+      <p class="sentence">每天早上 8 點，幫我整理<select><option>美元匯率</option><option>台積電</option><option>0050</option><option>黃金</option></select>的走勢，先列支持跟反對的理由，再說你的判斷。</p>
+      <p class="rule">守則：請你當反方，直接講風險在哪。資料附來源，不確定就說不確定。</p>
+      <button type="button">複製這句</button>
+    </div>
+    <p class="small r" style="--d:4">「請你當反方」這句，等一下你就知道為什麼要加。這是給自己看的，不拿來當給客戶的建議。</p>
+  </div>
+  <aside class="notes">
+    <li>呼應開場那句「每天通知我美元匯率走勢」。</li>
+    <li>ChatGPT 的排程功能可以設每天早上 8 點自動跑。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="blinds" data-stamp="11/21 週六　14:31" data-sec="01 看盤">
+  <div class="wrap">
+    <p class="phase r">真實對話 1／3</p>
+    <h2 class="kin">第一句話，我連要用哪個軟體都不知道</h2>
+    <div class="chat">
+      <div class="msg me step"><span class="who">我　14:31</span><span class="t">「我以前有用過 tradingview, 我不確定現在最適合我的看盤軟體是什麼，最好有 ai native, 能讓我跟 ai 同步討論、測試交易策略、以及快速做交易？」</span><span class="gloss">TradingView：最多人用的看盤網站。ai native：一開始就為 AI 設計的。</span></div>
+      <div class="msg sum step"><span class="who">Codex（摘要）</span><span class="t">比較了幾套看盤軟體，還提議幫我從頭做一個自己的看板。</span></div>
+      <div class="msg me step"><span class="who">我　15:10</span><span class="t">「我覺得自幹一個 dashboard 不太合理…dashboard 還是用 trading view，但是agent 要能代替我在 trading view 上做標記…自動幫我劃線」</span><span class="gloss">dashboard：自己做的看板。agent：會自己動手做事的 AI。</span></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>第一個提案我不喜歡，就直接講我要的樣子。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="deep" data-trans="rise" data-stamp="11/23 週一　23:22" data-sec="01 看盤">
+  <div class="wrap">
+    <div class="clock" style="position:absolute;right:4vw;top:7vh;color:rgba(255,248,239,.07)">23:22</div>
+    <p class="phase r">真實對話 2／3</p>
+    <h2 class="kin">週一晚上 11 點，我買了以太幣，<br>然後問它：我這筆買得好嗎？</h2>
+    <div class="chat">
+      <div class="msg me step"><span class="who">我　23:22</span><span class="t">「我剛在 1785 進場了，請幫我評論這個操作以及批判性思考」</span></div>
+      <div class="msg ai step"><span class="who">Codex　23:23</span><span class="t">「這筆可以用『跌深後搶反彈』來解釋，但當成突破單，進場偏早。」</span><span class="dots"><i></i><i></i><i></i></span></div>
+      <div class="msg ai step"><span class="who">Codex　23:23</span><span class="t">「第一道壓力離進場太近。」</span><span class="gloss">白話：往上能賺的空間大約 5 塊，往下可能賠 15 塊。</span><span class="dots"><i></i><i></i><i></i></span></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>1785 是我買進的價格。它直接講我買太早，往上能賺的空間太小。我要它做的就是這個：挑毛病。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="deep" data-trans="zoom" data-stamp="11/23 週一　23:35" data-sec="01 看盤">
+  <div class="wrap">
+    <div class="two wl">
+      <figure class="r"><img class="shot" src="assets/stock-eth-1785.jpg" alt="以太幣五分鐘價格圖，標有我買進的 1785 與底下 1,771.96 的前低線"><figcaption>左下「成交 1785」是我買的位置。最下面那條 1,771.96 是前低，也就是地板。</figcaption></figure>
+      <div class="stack">
+        <p class="phase r">真實對話 3／3</p>
+        <h2 class="kin">它在圖上畫了一條地板</h2>
+        <div class="chat">
+          <div class="msg ai step"><span class="who">Codex　23:34</span><span class="t">「若 1,771.96 的前低也失守，原本的短線反彈假設失效。」</span><span class="dots"><i></i><i></i><i></i></span></div>
+          <div class="msg me step"><span class="who">我　事後回想</span><span class="t">「還好我有聽 ai 的設好前低止損」</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>「失守」就是跌破。（你的回想）我把停損設在這條前低附近。有沒有用上，下一張揭曉。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="iris" data-stamp="揭曉" data-sec="01 看盤">
+  <div class="wrap">
+    <h2 class="kin">我有聽它的。<br>它畫的地板，就是我的停損線</h2>
+    <div class="cards c2">
+      <div class="panel r" style="--d:4"><span class="num">1</span><h3>真的跌破，照計畫出場</h3><p>它一畫出地板，我就把停損設在那裡。當天晚上跌破時照計畫出場，沒有被套住。</p></div>
+      <div class="panel r" style="--d:5"><span class="num">2</span><h3>下次也先這樣問</h3><p class="mint">請你當反方，直接講風險在哪。</p><p class="small">就是剛剛積木裡那句守則。</p></div>
+    </div>
+    <p class="lead step">買房、買車、換工作前，也可以先請它當反方。</p>
+  </div>
+  <aside class="notes">
+    <li>揭曉：我有聽。它先講我買太早、再畫出地板，我照著設好停損。（你來講當下的心情）</li>
+    <li>可以接一句：你們每天都在幫客戶先想「萬一」，請 AI 當反方是同一件事。</li>
+  </aside>
+</section>
+
+<!-- ============================================================
+     02 剪片
+     ============================================================ -->
+<section class="slide opener" data-sky="studio" data-trans="wipe" data-stamp="10/24 → 10/26" data-sec="02 剪片">
+  <div class="bignum">02</div>
+  <div class="wrap">
+    <div class="clock" data-roll="09:36" style="position:absolute;right:4vw;top:7vh">09:36</div>
+    <p class="kicker r">02　剪片</p>
+    <h1 class="mega kin" style="--kd:.3s">直播錄完，<br>後面那一串交給它</h1>
+    <p class="lead r" style="--d:4">Google Meet 錄影 → 剪映 → YouTube。<br><span class="small" style="color:var(--cream-2)">剪映：免費剪片軟體，手機、Mac、Windows 都有。</span></p>
+  </div>
+  <aside class="notes">
+    <li>這是一場用 Google Meet 開的線上直播（AI Day），錄完約一小時。（你來講：這場在聊什麼）</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="studio" data-trans="zoom" data-stamp="10/24 → 10/26" data-sec="02 剪片">
+  <div class="wrap">
+    <p class="phase r">成果</p>
+    <h2 class="kin">一支一小時的錄影丟進去，出來七樣東西</h2>
+    <p class="small r" style="--d:2;margin-top:-0.4em">10/24 到 10/26，來回幾輪做出來的。</p>
+    <div class="burst">
+      <span class="ring" style="--k:0"></span><span class="ring" style="--k:1"></span><span class="ring" style="--k:2"></span>
+      <div class="core"><div><span class="play">▶</span><b>Google Meet 錄影</b><small>約 1 小時</small></div></div>
+      <div class="chip" style="--a:-90deg;--k:0">剪映草稿<small>打開就能改</small></div>
+      <div class="chip" style="--a:-38deg;--k:1">字幕<small>能匯出字幕檔</small></div>
+      <div class="chip" style="--a:13deg;--k:2">章節<small>讓人跳著看</small></div>
+      <div class="chip" style="--a:64deg;--k:3">縮圖<small>用影片裡的真人截圖</small></div>
+      <div class="chip" style="--a:116deg;--k:4">YouTube 標題和說明</div>
+      <div class="chip" style="--a:167deg;--k:5">LINE 分享文<small>純文字</small></div>
+      <div class="chip" style="--a:218deg;--k:6">17 組問答<small>34 則提問整理而成</small></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>中間是一支約一小時的錄影，旁邊七樣都是 Codex 做的。</li>
+    <li>這七樣是我一邊看一邊講，來回幾輪做出來的。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="studio" data-trans="rise" data-stamp="剪映草稿" data-sec="02 剪片">
+  <div class="wrap">
+    <p class="phase r">成果</p>
+    <h2 class="kin">它交給我的是剪映檔，打開就能接著改</h2>
+    <div class="ken r" style="--d:2">
+      <img src="assets/video-qd-codex-v2.jpg" alt="剪映編輯畫面：Codex 產生的草稿，上方是素材，下方時間軸有多條文字軌與影片軌">
+      <span class="pin" style="--x:3%;--y:63%;--k:0">每一段文字都在時間軸上，可以改</span>
+      <span class="pin" style="--x:8%;--y:14%;--k:1">素材、Logo、配樂都放好了</span>
+    </div>
+    <p class="small r" style="--d:3;align-self:center">畫面是另一支球拍短片的剪映檔，同一套做法。</p>
+  </div>
+  <aside class="notes">
+    <li>這張是另一支球拍短片的剪映畫面，一樣是 Codex 生出來的草稿。</li>
+    <li>它給的是可以繼續改的剪映檔，我打開就能接手。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="studio" data-trans="rise" data-stamp="為什麼重要" data-sec="02 剪片">
+  <div class="wrap">
+    <p class="phase r">為什麼重要</p>
+    <h2 class="kin">錄完只是一半。<br>有字幕、章節、縮圖，別人才會點開、看得完</h2>
+    <div class="cards c4">
+      <div class="panel r" style="--d:3"><span class="num">1</span><p>剪掉開頭等人、結尾閒聊</p></div>
+      <div class="panel r" style="--d:3.4"><span class="num">2</span><p>上字幕、分章節</p></div>
+      <div class="panel r" style="--d:3.8"><span class="num">3</span><p>做縮圖、寫標題和說明</p></div>
+      <div class="panel r" style="--d:4.2"><span class="num">4</span><p>寫 LINE 分享文、整理提問</p></div>
+    </div>
+    <p class="lead step">這些它先做。我只在剪映裡做最後的判斷。</p>
+  </div>
+  <aside class="notes">
+    <li>問台下：你們手機裡有沒有錄好、一直沒整理的影片？小孩表演、家族旅遊、線上課。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="studio" data-trans="rise" data-stamp="我怎麼做" data-sec="02 剪片">
+  <div class="wrap">
+    <p class="phase r">我怎麼做</p>
+    <h2 class="kin">我在中間，前後都交給它</h2>
+    <div class="path">
+      <div class="node r" style="--d:3"><span class="dot">1</span><h3>Codex 先剪</h3><p>聽完整支、上字幕、剪掉頭尾。螢幕滿版，右下角放圓形人像。</p></div>
+      <div class="node r" style="--d:4"><span class="dot">2</span><h3>交剪映檔</h3><p>字幕、畫面、標題分開放，打開就能改。</p></div>
+      <div class="node r" style="--d:5"><span class="dot" style="border-color:var(--mint);color:var(--mint)">我</span><h3>我在剪映改</h3><p>只做最後的判斷：留哪段、字幕順不順。</p></div>
+      <div class="node r" style="--d:6"><span class="dot">3</span><h3>Codex 包裝</h3><p>標題、說明、章節、縮圖、LINE 分享文、問答整理。</p></div>
+    </div>
+    <div class="two even r" style="--d:7">
+      <img class="shot" style="max-height:min(24vh,260px)" src="assets/video-meet-thumbnail.jpg" alt="Grok Bot 能幫你做什麼？AI Day 直播的 YouTube 縮圖，右邊是真人截圖">
+      <p class="small">縮圖我請它用影片裡的真人截圖，不要 AI 重畫臉，字體也照我指定的。</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>縮圖指定用影片裡的真人截圖，臉才會是本人。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="studio" data-trans="zoom" data-stamp="11/03 → 11/10" data-sec="02 剪片">
+  <div class="wrap">
+    <div class="two wl">
+      <div class="stack" style="align-items:flex-start">
+        <div class="ba auto r" data-ba="">
+          <img src="assets/video-qd-codex-v2.jpg" alt="Codex 初剪的剪映畫面：第 5 秒，畫面上方塞滿字卡，球員很小">
+          <img class="after" src="assets/video-qd-sonia-v4.jpg" alt="Sonia 在剪映改完的版本：同一秒，球員放大，字卡變少">
+          <span class="bar"></span><span class="knob">⇆</span>
+          <span class="lab l">Codex 初剪</span><span class="lab rt">Sonia 改完</span>
+        </div>
+        <p class="small">一支球拍短片，同一個第 5 秒。拖曳比對（或按 B）</p>
+      </div>
+      <div class="stack">
+        <p class="phase r">我怎麼做</p>
+        <h2 class="kin">同一秒，你第一眼<br>看到球員，還是字？</h2>
+        <div class="cards c2 r" style="--d:4">
+          <div class="panel"><span class="num" data-count="45">45</span><p class="small">Codex 初剪的文字片段</p></div>
+          <div class="panel"><span class="num" data-count="4">4</span><p class="small">Sonia 改完剩下的文字片段</p></div>
+        </div>
+        <p class="small r" style="--d:5">七段畫面和剪接點都用 Codex 剪的。Sonia 改的是字和畫面大小。</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>（你來介紹 Sonia）骨架交給它，「好不好看」交給人。Codex 還把兩版差在哪整理成筆記，下次照著剪。</li>
+    <li>畫面素材來自品牌官方影片與比賽轉播。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="studio" data-trans="rise" data-stamp="你也用得到" data-sec="02 剪片">
+  <div class="wrap">
+    <p class="phase r">用在哪裡</p>
+    <h2 class="kin">你手機裡那些沒整理的影片</h2>
+    <div class="cards c4">
+      <div class="panel scene r" style="--d:2"><span class="emo">♪</span><h3>小孩表演</h3><p>剪掉等待，留下上台那幾分鐘。</p></div>
+      <div class="panel scene r" style="--d:3"><span class="emo">✈</span><h3>家族旅遊影片</h3><p>上字幕、配音樂，傳到家族群組。</p></div>
+      <div class="panel scene r" style="--d:4"><span class="emo">▶</span><h3>線上說明會、讀書會</h3><p>分章節，沒到的人也能跳著看。</p></div>
+      <div class="panel scene r" style="--d:5"><span class="emo">★</span><h3>社團活動</h3><p>做一支精華，加一段分享文。</p></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>剪映有 Windows 版，一半用 Windows 的同學也能試。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="studio" data-trans="rise" data-stamp="今晚就能試" data-sec="02 剪片">
+  <div class="wrap">
+    <p class="phase r">怎麼開始</p>
+    <h2 class="kin">今晚就能試：挑一支影片，組一句話</h2>
+    <div class="builder r" style="--d:3" data-builder="">
+      <span class="label">指令積木｜字幕稿、LINE 分享文 ChatGPT 就能做；要剪映草稿用 Codex</span>
+      <p class="sentence">這支<select><option>線上會議錄影</option><option>小孩表演影片</option><option>旅遊影片</option></select>幫我<select><option>上字幕</option><option>分章節</option><option>寫一段 LINE 分享文</option></select>，給<select><option>家人</option><option>朋友</option><option>社團</option></select>看。</p>
+      <p class="rule">守則：做完先列出你改了哪些地方，我看過再定稿。</p>
+      <button type="button">複製這句</button>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>想要剪映檔，就在 Codex 裡說「輸出成剪映草稿」。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="studio" data-trans="blinds" data-stamp="10/26 週一　09:36 → 21:34" data-sec="02 剪片">
+  <div class="wrap">
+    <p class="phase r">真實對話 1／2</p>
+    <h2 class="kin">指令很口語，我就是邊看邊講我要什麼</h2>
+    <div class="chat">
+      <div class="msg me step"><span class="who">我　09:36</span><span class="t">「匯出的剪映格式中，請使用字幕格式，這樣我才能匯出 srt ，原本的 draft 似乎不是用字幕格式，而是字卡？」</span><span class="gloss">字卡只是貼在畫面上的字；字幕才能匯出成字幕檔，上傳 YouTube。</span></div>
+      <div class="msg me step"><span class="who">我　09:38</span><span class="t">「通常分享完影片之後，我還要一個簡單的 line 群分享文字…line 特色是純文字，說清楚為什麼要看、會得到什麼價值」</span></div>
+      <div class="msg sum step"><span class="who">Codex（摘要）</span><span class="t">把字卡改成能匯出的字幕，補上 LINE 分享文，再把整套剪輯、發布流程寫成一份 SOP。</span></div>
+      <div class="msg me step"><span class="who">我　21:34</span><span class="t">「非常好，這次就是未來所有 google meet 轉文宣密件的 sop　包含　1. 剪輯流程 2. 發布流程」</span><span class="gloss">文宣密件：我的付費會員信。</span></div>
+    </div>
+    <p class="tag step">做順一次，就請它寫成 SOP（固定做法），下一次它照著做</p>
+  </div>
+  <aside class="notes">
+    <li>最後一句最重要：做順了，請它把流程存起來。這就是你們學過的 skill。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="studio" data-trans="rise" data-stamp="11/05 → 11/11" data-sec="02 剪片">
+  <div class="wrap">
+    <p class="phase r">真實對話 2／2</p>
+    <h2 class="kin">標準我來講，它照著改到好</h2>
+    <div class="chat">
+      <div class="msg me step"><span class="who">我　11/05</span><span class="t">「那幫我修好剪映草稿，確認能在剪映清單找到、實際打開接手編輯，不要只驗證檔案。」</span></div>
+      <div class="msg sum step"><span class="who">Codex（摘要）</span><span class="t">修好之後，每次交付前都親自打開剪映、改一段字再復原，確認真的能接手。</span></div>
+      <div class="msg me step"><span class="who">我　11/11</span><span class="t">「突然發現，你剪的這支影片原本的擊球聲音、賽場聲音好像沒有錄到？我覺得應該要有，這很重要」</span></div>
+      <div class="msg sum step"><span class="who">Codex（摘要）</span><span class="t">從原始比賽檔把擊球聲找回來，重新對齊畫面。</span></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>我講一個標準，它就照著改一次：草稿要能在剪映打開接手、比賽原音要留著。驗收標準我自己定。</li>
+  </aside>
+</section>
+
+<!-- ============================================================
+     03 旅遊
+     ============================================================ -->
+<section class="slide opener" data-sky="dawn" data-trans="iris" data-stamp="關西　11/28 → 12/06" data-sec="03 旅遊">
+  <div class="bignum">03</div>
+  <div class="wrap">
+    <div class="clock" style="position:absolute;right:4vw;top:7vh">11.28</div>
+    <p class="kicker r">03　旅遊</p>
+    <h1 class="mega kin" style="--kd:.3s">四個人一起出國，<br>行前清單放哪裡？</h1>
+    <p class="lead r" style="--d:4">我請 Codex 做了一個旅行網站。</p>
+  </div>
+  <aside class="notes">
+    <li>這趟是我跟 Sonia 和朋友一起去關西，11/28 出發。為什麼做成網站：（你來講）</li>
+    <li>網站要用 ChatGPT 帳號登入，上課前先在這台電腦登入一次。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="dawn" data-trans="zoom" data-stamp="ChatGPT 網站" data-sec="03 旅遊">
+  <div class="wrap">
+    <p class="phase r">成果</p>
+    <h2 class="kin">關西，沿途收藏：一個網址，行前到回憶都在裡面</h2>
+    <div class="devices r" style="--d:2">
+      <div class="laptop"><div class="lid"><div class="screen" data-scroll="" style="--dur:20s"><img src="assets/travel-kansai-full-desktop.jpg" alt="旅行網站電腦版整頁：關西，沿途收藏，嵐山紅葉、三座城市、旅程倒數與旅行清單"></div></div><div class="base"></div></div>
+      <div class="phone"><span class="notch"></span><div class="screen" data-scroll="" style="--dur:24s"><img src="assets/travel-kansai-full-mobile.jpg" alt="同一個旅行網站的手機版畫面"></div></div>
+    </div>
+    <a class="btn-live r" style="--d:4;align-self:center" href="https://kansai-four-friends-2026-sonia.shiuan.chatgpt.site/?view=before" target="_blank" rel="noopener noreferrer">現場打開網站 ↗</a>
+  </div>
+  <aside class="notes">
+    <li>筆電和手機會自己捲動，讓大家看完整頁。</li>
+    <li>現場點進去只滑「出發之前」那頁就好。「行程之間」「記帳」我沒看過，可能有同行者姓名或金額，要點之前先自己看。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="dawn" data-trans="rise" data-stamp="任務袋　·　準備重要旅行文件" data-sec="03 旅遊">
+  <div class="wrap">
+    <div class="two even">
+      <div class="stack">
+        <p class="phase r">成果</p>
+        <h2 class="kin">行前清單做成闖關，<br>完成一項蓋一個楓葉章</h2>
+        <p class="lead step" data-add="#stampbox:hit">清單裡有一項，你們一定最熟：</p>
+        <p class="quote step">「安排旅遊保障：<br>買張旅平險或旅遊不便險保單吧！」</p>
+      </div>
+      <div class="stampbox r" id="stampbox" style="--d:3">
+        <img src="assets/travel-kansai-insurance.jpg" alt="任務清單：收齊預約憑證、安排旅遊保障、填寫日本入境資料、替重要文件留備份，其中安排旅遊保障已蓋上楓葉章">
+        <div class="hilite"></div>
+        <div class="seal"><div><b>✓</b>已蓋章</div></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>按 → 一次：那一行會被畫重點，蓋章落下。再按一次出現原文。</li>
+    <li>笑點之外可以補一句：幫客戶做行前提醒，這種清單網站也做得出來（點到為止）。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="dawn" data-trans="rise" data-stamp="為什麼重要" data-sec="03 旅遊">
+  <div class="wrap">
+    <p class="phase r">為什麼重要</p>
+    <h2 class="kin">行程在 LINE、訂房在信箱、機票在截圖。<br>出發前，總有人問「那個放哪？」</h2>
+    <div class="cards c3">
+      <div class="panel r" style="--d:4"><span class="num">一個網址</span><p>所有人看同一份，不用在群組裡翻。</p></div>
+      <div class="panel r" style="--d:5"><span class="num">一張圖</span><p>幾個地方攤開比，全家一眼看懂。</p></div>
+      <div class="panel r" style="--d:6"><span class="num">每個人</span><p>要的不一樣，它會一起排進去。</p></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>先講痛點，再帶年底家族旅行的例子。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="dawn" data-trans="zoom" data-stamp="9/05　家族旅行比較圖" data-sec="03 旅遊">
+  <div class="wrap">
+    <div class="two wl">
+      <div class="reveal-wrap r" id="cebu">
+        <img src="assets/travel-cebu-compare.jpg" alt="比較圖：檳城、普吉島、宿霧加邦勞三地，用匹克球、海島感、交通、年末四項打分">
+        <span class="glow"></span>
+        <span class="cover" style="left:86.5%;top:25.6%;width:9.5%;height:3.8%">？</span>
+      </div>
+      <div class="stack">
+        <p class="phase r">我怎麼做</p>
+        <h2 class="kin">年底的家族旅行，<br>猜猜我們家選哪裡？</h2>
+        <p class="lead step" data-add="#cebu:open">宿霧＋邦勞。爸爸跟我能打球，媽媽跟哥哥能放空，台北直飛約 3 小時。</p>
+        <p class="small step">後來爸媽改買了 1/4 出發的機票，行程又重排了一次。圖上是當時的版本，價格是 9/5 查的估算。</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>先讓台下舉手猜：檳城、普吉島、宿霧。按 → 揭曉，貼紙掀開，宿霧那欄會發光。</li>
+    <li>（你來講）家人看到這張圖的反應。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="dawn" data-trans="rise" data-stamp="我怎麼做" data-sec="03 旅遊">
+  <div class="wrap">
+    <p class="phase r">我怎麼做</p>
+    <h2 class="kin">三個動作，從一句話到一張圖</h2>
+    <div class="path" style="grid-template-columns:repeat(3,1fr)">
+      <div class="node r" style="--d:3"><span class="dot">1</span><h3>先講每個人要什麼</h3><p>爸爸跟我想打球，媽媽和哥哥想放空。這些限制先講清楚。</p></div>
+      <div class="node r" style="--d:4"><span class="dot">2</span><h3>要它做成能分享的成品</h3><p>比較圖、行程海報、旅行網站，丟到群組大家就看得懂。</p></div>
+      <div class="node r" style="--d:5"><span class="dot">3</span><h3>不喜歡就直說</h3><p>第一版是日式雜誌風，我說要像旅行社廣告、放真實照片。</p></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>第三步就是等一下對話裡那句「這樣不行」。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="dawn" data-trans="rise" data-stamp="你也用得到" data-sec="03 旅遊">
+  <div class="wrap">
+    <p class="phase r">用在哪裡</p>
+    <h2 class="kin">一群人要一起決定的事，都能先丟給它</h2>
+    <div class="cards c4">
+      <div class="panel scene r" style="--d:2"><span class="emo">家</span><h3>家族旅行</h3><p>每個人要的不一樣，比較圖一張搞定。</p></div>
+      <div class="panel scene r" style="--d:3"><span class="emo">親</span><h3>帶爸媽出國</h3><p>走路少一點、休息多一點，請它排進去。</p></div>
+      <div class="panel scene r" style="--d:4"><span class="emo">友</span><h3>朋友出國</h3><p>做一個行前清單網站，誰沒準備好一看就知道。</p></div>
+      <div class="panel scene r" style="--d:5"><span class="emo">聚</span><h3>聚餐、慶生</h3><p>群組意見貼上，請它整理出兩三個選項。</p></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>不只旅行，任何「一群人要一起決定」的事都適用。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="dawn" data-trans="rise" data-stamp="今晚就能試" data-sec="03 旅遊">
+  <div class="wrap">
+    <p class="phase r">怎麼開始</p>
+    <h2 class="kin">今晚就能試：家族群組吵不完的行程，先丟給它</h2>
+    <div class="builder r" style="--d:3" data-builder="">
+      <span class="label">指令積木｜ChatGPT 或 Codex 都能用</span>
+      <p class="sentence">我們<select><option>一家五口</option><option>四個朋友</option><option>夫妻兩人</option></select>想在<select><option>12 月</option><option>過年</option><option>暑假</option></select>出國，幫我比較<select><option>兩個</option><option>三個</option></select>地點，做成一張可以丟到群組的比較圖。</p>
+      <p class="rule">守則：價格寫明是估算和查詢日期，還沒確定的寫「待確認」。</p>
+      <button type="button">複製這句</button>
+    </div>
+    <p class="small r" style="--d:4">手機 ChatGPT 就能做比較圖。想做成關西那樣的網站，再用 Codex。</p>
+  </div>
+  <aside class="notes">
+    <li>群組對話也可以整段貼上，它會看出每個人在意什麼。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="dawn" data-trans="blinds" data-stamp="8/30 週日　13:26 → 23:54" data-sec="03 旅遊">
+  <div class="wrap">
+    <p class="phase r">真實對話　·　年底家族旅行的規劃</p>
+    <h2 class="kin">普吉島的機票一直沒出來</h2>
+    <div class="chat">
+      <div class="msg me step"><span class="who">我　13:26</span><span class="t">「我們家本來要去普吉島，但普吉島的機票一直沒有出來…普吉島跟檳城，哪一個更適合我們這次年末 12 月 28 號以後的一週旅行？」</span></div>
+      <div class="msg me step"><span class="who">我　13:57</span><span class="t">「安排時需要同時考量到不打匹克球的媽媽和哥哥，或者是有什麼樣的訓練營，可以讓我跟愛打匹克球的爸爸去參加。」</span></div>
+      <div class="msg me step"><span class="who">我　23:54</span><span class="t">「這樣不行，你要做得像是旅行社廣告　幾天幾頁　場景都要用真實的照片插入增加可信度」</span></div>
+      <div class="msg sum step"><span class="who">Codex（摘要）</span><span class="t">改成旅行社廣告風、放真實照片；後來加進宿霧，做成一張比較圖和一張行程海報。</span></div>
+      <div class="msg me step"><span class="who">我　9/15　21:02</span><span class="t">「這是我們的家庭群組討論　在薄荷島四天，宿務一天會不會很奇怪？」</span></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>關西網站當初的對話在雲端，這台電腦沒有，所以用年底家族旅行規劃時的真實對話。</li>
+    <li>最後一句是把家族群組的討論整段貼給它，請它當第三方。</li>
+  </aside>
+</section>
+
+<!-- ============================================================
+     收尾
+     ============================================================ -->
+<section class="slide" data-sky="night" data-trans="iris" data-stamp="三件事的共同點" data-sec="收尾">
+  <div class="wrap">
+    <h2 class="kin">三件事，我都用這四個動作跟它講話</h2>
+    <div class="cards c4">
+      <div class="panel r" style="--d:3"><span class="num">1</span><h3>先講卡在哪</h3><p class="small">「普吉島的機票一直沒有出來」</p></div>
+      <div class="panel r" style="--d:4"><span class="num">2</span><h3>不喜歡就直接嫌</h3><p class="small">「太多線了，沒意義」<br>「這樣不行，你要做得像是旅行社廣告」</p></div>
+      <div class="panel r" style="--d:5"><span class="num">3</span><h3>用自己的標準驗收</h3><p class="small">「實際打開接手編輯，不要只驗證檔案」</p></div>
+      <div class="panel r" style="--d:6"><span class="num">4</span><h3>做順了就存起來</h3><p class="small">「請你把我們今天的討論整理成一個新的專案」</p></div>
+    </div>
+    <p class="lead step">這四句，明天你也能照著講。</p>
+  </div>
+  <aside class="notes">
+    <li>四句都是剛剛出現過的原話，帶大家回想一次。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="rise" data-stamp="今天沒講的兩件" data-sec="收尾">
+  <div class="wrap">
+    <h2 class="kin">另外兩件，下課想聽再來抓我</h2>
+    <div class="cards c2">
+      <div class="panel r" style="--d:3"><span class="num">會議紀錄</span><p>錄音丟進去，出來會議紀錄和下一步。你們第一堂就做過。</p></div>
+      <div class="panel r" style="--d:4"><span class="num">匹克球網站</span><p>排程找最新影片 → 寫成文章上架 → 做成字卡、發 LINE 社群 → 辦訓練營、開箱球拍。</p></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>匹克島那條線可以簡單講：一支影片變成文章、字卡、社群貼文，最後帶到訓練營。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="dusk" data-trans="iris" data-stamp="明天　18:30" data-sec="收尾">
+  <div class="wrap">
+    <div class="clock" data-roll="18:30" style="position:absolute;right:4vw;top:7vh">18:30</div>
+    <p class="kicker r">今晚下班之後</p>
+    <h1 class="mega kin" style="--kd:.3s">挑一件生活裡的麻煩，<br>丟給它試試看</h1>
+    <p class="lead r" style="--d:5">做出來了，傳到群組給我看。</p>
+  </div>
+  <aside class="notes">
+    <li>三個積木都在前面，回家打開這份簡報就能複製。</li>
+  </aside>
+</section>
+
+</main>
+
+<!-- HUD（不跟著轉場動） -->
+<div class="hud" aria-label="簡報導覽">
+  <div class="hud-top"><span class="hud-stamp" id="hudStamp">打卡　18:30</span><span id="hudSec">開場</span></div>
+  <div class="hud-bottom">
+    <div class="timeline" id="timeline"></div>
+    <div class="hud-ctl"><span id="counter">1 / 1</span><button type="button" id="prevBtn" aria-label="上一張">‹</button><button type="button" id="nextBtn" aria-label="下一張">›</button><button type="button" id="notesBtn" aria-label="講者備註（N）">N</button></div>
+  </div>
+</div>
+<div class="notes-panel" id="notesPanel" aria-live="polite"></div>
+
+<!-- 視覺化編輯器：網址加 ?edit 才會打開；一定要放在主程式前面 -->
+<script src="assets/deck-editor.js"></script>
+<script>
+/* ===========================================
+   0. 模式：?qa＝每張直接顯示最終狀態（檢查用）；M＝安靜模式
+   =========================================== */
+const ROOT = document.documentElement;
+const QA = new URLSearchParams(location.search).has('qa');
+if (QA) ROOT.classList.add('qa');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (reduce) ROOT.classList.add('calm');
+const calm = () => ROOT.classList.contains('calm');
+
+/* ===========================================
+   1. 背景：會變色的城市夜空（canvas）
+   =========================================== */
+const Sky = (() => {
+  const cv = document.getElementById('sky'), ctx = cv.getContext('2d');
+  const P = {
+    dusk:   { c: [[54,63,78],[77,74,85],[226,150,78]], stars: 0.2, lights: 0.35, glow: 0.55 },
+    night:  { c: [[11,15,22],[27,33,44],[62,52,60]],   stars: 1,   lights: 0.75, glow: 0.25 },
+    deep:   { c: [[4,5,8],[11,13,18],[24,19,24]],      stars: 0.9, lights: 0.15, glow: 0.08 },
+    studio: { c: [[16,20,28],[28,35,46],[38,70,72]],   stars: 0.35, lights: 0.55, glow: 0.3 },
+    dawn:   { c: [[40,50,74],[124,98,112],[238,168,112]], stars: 0.08, lights: 0.2, glow: 0.7 }
+  };
+  let cur = JSON.parse(JSON.stringify(P.dusk)), target = P.dusk, W, H, dpr, stars = [], blds = [], t0 = performance.now(), last = 0;
+  function rnd(seed) { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+  function build() {
+    dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const r = rnd(42); stars = []; for (let i = 0; i < 160; i++) stars.push({ x: r() * W, y: r() * H * 0.62, s: r() * 1.4 + 0.3, p: r() * 6.28 });
+    blds = []; let x = -10;
+    while (x < W + 10) { const w = 30 + r() * 70, h = H * (0.035 + r() * 0.085 + (r() > 0.88 ? 0.06 : 0)); const wins = [];
+      for (let wy = H - h + 10; wy < H - 8; wy += 13) for (let wx = x + 7; wx < x + w - 8; wx += 11) if (r() > 0.35) wins.push({ x: wx, y: wy, p: r() * 6.28, k: r() });
+      blds.push({ x, w, h, wins }); x += w + 2 + r() * 10; }
+  }
+  const lerp = (a, b, k) => a + (b - a) * k;
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (now - last < (calm() ? 1000 : 33)) return; last = now;
+    const k = 0.05;
+    for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) cur.c[i][j] = lerp(cur.c[i][j], target.c[i][j], k);
+    ['stars', 'lights', 'glow'].forEach(n => cur[n] = lerp(cur[n], target[n], k));
+    const t = (now - t0) / 1000, c = cur.c, rgb = a => `rgb(${a.map(Math.round).join(',')})`;
+    const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, rgb(c[0])); g.addColorStop(0.58, rgb(c[1])); g.addColorStop(1, rgb(c[2]));
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    // 地平線的光
+    const hg = ctx.createRadialGradient(W * 0.5, H * 1.05, 0, W * 0.5, H * 1.05, H * 0.9);
+    hg.addColorStop(0, `rgba(232,157,79,${0.35 * cur.glow})`); hg.addColorStop(1, 'rgba(232,157,79,0)'); ctx.fillStyle = hg; ctx.fillRect(0, 0, W, H);
+    // 星星
+    for (const s of stars) { const a = cur.stars * (0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * 1.3 + s.p))); if (a < 0.02) continue; ctx.fillStyle = `rgba(255,248,239,${a * 0.8})`; ctx.fillRect(s.x, s.y, s.s, s.s); }
+    // 城市剪影＋窗戶
+    const bc = c[2].map((v, i) => Math.round(v * 0.16 + [10, 13, 18][i] * 0.84));
+    ctx.fillStyle = `rgb(${bc.join(',')})`;
+    for (const b of blds) ctx.fillRect(b.x, H - b.h, b.w, b.h);
+    for (const b of blds) for (const w of b.wins) { if (w.k > cur.lights) continue; const a = 0.45 + 0.4 * Math.sin(t * 0.5 + w.p); ctx.fillStyle = `rgba(255,210,143,${Math.max(0.12, a)})`; ctx.fillRect(w.x, w.y, 4, 5); }
+    // 路上的車燈
+    const y = H - 3; for (let i = 0; i < 6; i++) { const px = ((t * (60 + i * 22) + i * 300) % (W + 200)) - 100; ctx.fillStyle = i % 2 ? 'rgba(255,120,90,.55)' : 'rgba(255,240,200,.6)'; ctx.fillRect(i % 2 ? W - px : px, y - (i % 3), 26, 2); }
+  }
+  addEventListener('resize', build); build(); requestAnimationFrame(frame);
+  return { set(name) { target = P[name] || P.night; if (QA || calm()) cur = JSON.parse(JSON.stringify(target)); } };
+})();
+
+/* ===========================================
+   2. 文字拆字：標題逐字進場、對話逐字打出
+   =========================================== */
+function splitInto(el, cls) {
+  let i = 0;
+  const walk = node => [...node.childNodes].forEach(c => {
+    if (c.nodeType === 3) {
+      const f = document.createDocumentFragment();
+      for (const ch of c.textContent) {
+        if (!ch.trim()) { f.appendChild(document.createTextNode(ch)); continue; }
+        const s = document.createElement('span'); s.className = cls; s.style.setProperty('--i', i++); s.textContent = ch; f.appendChild(s);
+      }
+      c.replaceWith(f);
+    } else if (c.nodeType === 1 && c.tagName !== 'BR' && !c.classList.contains('gloss') && !c.classList.contains('who') && !c.classList.contains('dots')) walk(c);
+  });
+  walk(el); return i;
+}
+document.querySelectorAll('.kin').forEach(el => splitInto(el, 'ch'));
+document.querySelectorAll('.msg .t, .autotype').forEach(el => splitInto(el, 'tc'));
+document.querySelectorAll('.msg.ai, .msg.sum').forEach(m => { if (!m.querySelector('.dots')) m.insertAdjacentHTML('beforeend', '<span class="dots"><i></i><i></i><i></i></span>'); });
+
+/* 打字機：回傳 { finish }，可以中途直接打完 */
+function typeOut(el, { dots = true, speed } = {}) {
+  const chars = [...el.querySelectorAll('.tc')];
+  if (calm() || QA || !chars.length) { chars.forEach(c => c.classList.add('v')); return null; }
+  chars.forEach(c => c.classList.remove('v'));
+  const per = speed || Math.max(10, Math.min(34, 1500 / chars.length));
+  let i = 0, timer = null, stopped = false;
+  const msg = el.closest('.msg'); if (msg && dots) msg.classList.add('typing');
+  const startAt = performance.now() + (dots ? 520 : 0);
+  const tick = now => {
+    if (stopped) return;
+    if (now >= startAt) { if (msg) msg.classList.remove('typing'); const n = Math.floor((now - startAt) / per); while (i < Math.min(n, chars.length)) chars[i++].classList.add('v'); }
+    if (i >= chars.length) { job.done = true; return; }
+    timer = requestAnimationFrame(tick);
+  };
+  const job = { done: false, finish() { stopped = true; cancelAnimationFrame(timer); chars.forEach(c => c.classList.add('v')); if (msg) msg.classList.remove('typing'); job.done = true; } };
+  timer = requestAnimationFrame(tick); return job;
+}
+
+/* ===========================================
+   3. 數字跑表、時鐘、自動捲動
+   =========================================== */
+function countUp(el) {
+  const to = +el.dataset.count, fmt = n => n.toLocaleString('en-US');
+  if (calm() || QA) { el.textContent = fmt(to); return; }
+  const t0 = performance.now(), dur = 1400 + Math.min(1200, to / 6);
+  const step = now => { const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 4); el.textContent = fmt(Math.round(to * e)); if (p < 1) requestAnimationFrame(step); };
+  el.textContent = '0'; requestAnimationFrame(step);
+}
+function rollClock(el) {
+  const [h, m] = el.dataset.roll.split(':').map(Number), end = h * 60 + m, start = end - 95;
+  if (calm() || QA) { el.textContent = el.dataset.roll; return; }
+  const t0 = performance.now(), dur = 1600;
+  const step = now => { const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3); let v = Math.round(start + (end - start) * e); v = (v + 1440) % 1440;
+    el.textContent = String(Math.floor(v / 60)).padStart(2, '0') + ':' + String(v % 60).padStart(2, '0'); if (p < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function setupScroll(slide) {
+  slide.querySelectorAll('[data-scroll]').forEach(sc => {
+    const img = sc.querySelector('img'); if (!img) return;
+    const apply = () => sc.style.setProperty('--travel', -(img.getBoundingClientRect().height - sc.clientHeight) + 'px');
+    if (img.complete) apply(); else img.addEventListener('load', apply, { once: true });
+  });
+}
+
+/* ===========================================
+   4. 主控：換張、分步、轉場
+   =========================================== */
+class Deck {
+  constructor() {
+    this.slides = [...document.querySelectorAll('.deck .slide')];
+    this.i = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 || 0, 0), this.slides.length - 1);
+    this.job = null; this.vt = null;
+    this.notes = document.getElementById('notesPanel');
+    this.buildTimeline(); this.show(this.i, QA); this.bind();
+  }
+  steps(s) { return [...s.querySelectorAll('.step')]; }
+  buildTimeline() {
+    const secs = []; this.slides.forEach(s => { const n = s.dataset.sec; const last = secs[secs.length - 1]; if (!last || last.n !== n) secs.push({ n, c: 1 }); else last.c++; });
+    this.secs = secs;
+    document.getElementById('timeline').innerHTML = secs.map(s => `<div class="seg" style="--w:${s.c}"><i></i><b>${s.n}</b></div>`).join('');
+  }
+  /* 進入一張：all=true 時所有步驟直接顯示（往回退、QA） */
+  show(n, all) {
+    if (this.job) { this.job.finish(); this.job = null; }
+    this.slides.forEach((s, k) => s.classList.toggle('active', k === n));
+    this.i = n; const s = this.slides[n];
+    this.steps(s).forEach(el => { el.classList.toggle('on', !!all); this.applyAdd(el, !!all); });
+    s.querySelectorAll('.msg .tc, .autotype .tc').forEach(c => c.classList.toggle('v', !!all || QA));
+    s.querySelectorAll('[data-count]').forEach(countUp);
+    s.querySelectorAll('[data-roll]').forEach(rollClock);
+    setupScroll(s);
+    const at = s.querySelector('.autotype'); if (at && !all) this.job = typeOut(at, { dots: false, speed: 95 });
+    Sky.set(s.dataset.sky);
+    const st = document.getElementById('hudStamp'); st.textContent = s.dataset.stamp || ''; st.classList.remove('flip'); void st.offsetWidth; st.classList.add('flip');
+    document.getElementById('hudSec').textContent = s.dataset.sec || '';
+    document.getElementById('counter').textContent = (n + 1) + ' / ' + this.slides.length;
+    let idx = 0; this.secs.forEach((sec, k) => { const seg = document.querySelectorAll('.timeline .seg')[k]; const fill = Math.max(0, Math.min(1, (n + 1 - idx) / sec.c)); seg.style.setProperty('--fill', fill * 100 + '%'); seg.classList.toggle('now', n >= idx && n < idx + sec.c); idx += sec.c; });
+    history.replaceState(null, '', location.search + '#' + (n + 1));
+    this.renderNotes();
+  }
+  /* data-add="#id:class" 讓某一步同時觸發別的效果（揭曉、蓋章…） */
+  applyAdd(el, on) { const a = el.dataset.add; if (!a) return; const [sel, cls] = a.split(':'); const t = document.querySelector(sel); if (t) t.classList.toggle(cls, on); }
+  go(n) {
+    if (n < 0 || n >= this.slides.length || n === this.i) return;
+    const fwd = n > this.i, all = !fwd;
+    if (this.vt) { try { this.vt.skipTransition(); } catch (e) {} this.vt = null; }
+    if (document.startViewTransition && !calm() && !QA) {
+      ROOT.classList.add('vt'); ROOT.dataset.trans = this.slides[fwd ? n : this.i].dataset.trans || 'rise'; ROOT.dataset.dir = fwd ? 'fwd' : 'back';
+      const vt = document.startViewTransition(() => this.show(n, all)); this.vt = vt;
+      vt.ready.catch(() => {}); vt.updateCallbackDone.catch(() => {});
+      vt.finished.catch(() => {}).finally(() => { if (this.vt === vt) this.vt = null; });
+    } else { ROOT.classList.remove('vt'); this.show(n, all); }
+  }
+  next() {
+    if (this.job && !this.job.done) { this.job.finish(); this.job = null; return; }
+    const s = this.slides[this.i], hidden = this.steps(s).find(el => !el.classList.contains('on'));
+    if (hidden) {
+      hidden.classList.add('on'); this.applyAdd(hidden, true);
+      if (hidden.matches('.msg.ai, .msg.sum')) this.job = typeOut(hidden.querySelector('.t'));
+      else if (hidden.matches('.msg.me')) { hidden.querySelectorAll('.tc').forEach(c => c.classList.add('v')); }
+      return;
+    }
+    this.go(this.i + 1);
+  }
+  prev() {
+    if (this.job && !this.job.done) { this.job.finish(); this.job = null; }
+    const shown = this.steps(this.slides[this.i]).filter(el => el.classList.contains('on'));
+    if (shown.length) { const el = shown[shown.length - 1]; el.classList.remove('on'); this.applyAdd(el, false); el.querySelectorAll('.tc').forEach(c => c.classList.remove('v')); return; }
+    this.go(this.i - 1);
+  }
+  renderNotes() { const it = this.slides[this.i].querySelector('.notes'); this.notes.innerHTML = '<h4>講者備註｜' + (this.i + 1) + '／' + this.slides.length + '　' + (this.slides[this.i].dataset.sec || '') + '</h4><ul>' + (it ? it.innerHTML : '') + '</ul>'; }
+  bind() {
+    document.addEventListener('keydown', e => {
+      const tag = (e.target.tagName || '').toLowerCase(); if (tag === 'select' || tag === 'input' || tag === 'textarea') return;
+      const k = e.key;
+      if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'Enter'].includes(k)) { e.preventDefault(); this.next(); }
+      else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { e.preventDefault(); this.prev(); }
+      else if (k === 'Home') this.go(0);
+      else if (k === 'End') this.go(this.slides.length - 1);
+      else if (k === 'n' || k === 'N') this.notes.classList.toggle('show');
+      else if (k === 'm' || k === 'M') { ROOT.classList.toggle('calm'); this.show(this.i, true); }
+      else if (k === 'f' || k === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+      else if (k === 'b' || k === 'B') { const ba = this.slides[this.i].querySelector('[data-ba]'); if (ba) { ba.classList.remove('auto'); const c = parseFloat(getComputedStyle(ba).getPropertyValue('--pos')) || 50; ba.style.setProperty('--pos', c > 50 ? '0%' : '100%'); } }
+    });
+    let x0 = null;
+    document.addEventListener('touchstart', e => { if (e.target.closest('[data-ba], .builder')) return; x0 = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 50) dx < 0 ? this.next() : this.prev(); });
+    let lock = false;
+    document.addEventListener('wheel', e => { if (lock || Math.abs(e.deltaY) < 30 || e.target.closest('.notes-panel')) return; lock = true; setTimeout(() => lock = false, 700); e.deltaY > 0 ? this.next() : this.prev(); }, { passive: true });
+    document.getElementById('nextBtn').onclick = () => this.next();
+    document.getElementById('prevBtn').onclick = () => this.prev();
+    document.getElementById('notesBtn').onclick = () => this.notes.classList.toggle('show');
+    addEventListener('resize', () => setupScroll(this.slides[this.i]));
+  }
+}
+
+/* ===========================================
+   5. 前後對照滑桿、指令積木
+   =========================================== */
+document.querySelectorAll('[data-ba]').forEach(ba => {
+  let drag = false; const move = x => { const r = ba.getBoundingClientRect(); ba.classList.remove('auto'); ba.style.setProperty('--pos', Math.min(100, Math.max(0, (x - r.left) / r.width * 100)) + '%'); };
+  ba.addEventListener('pointerdown', e => { drag = true; ba.setPointerCapture(e.pointerId); move(e.clientX); });
+  ba.addEventListener('pointermove', e => { if (drag) move(e.clientX); });
+  ba.addEventListener('pointerup', () => { drag = false; });
+});
+document.querySelectorAll('[data-builder]').forEach(b => {
+  const btn = b.querySelector('button'); if (!btn) return;
+  btn.addEventListener('click', async () => {
+    const sentence = [...b.querySelector('.sentence').childNodes].map(n => n.nodeType === 3 ? n.textContent : (n.value || n.textContent)).join('').replace(/\s+/g, ' ').trim();
+    const text = sentence + '\n' + b.querySelector('.rule').textContent.replace(/^守則：/, '').trim();
+    try { await navigator.clipboard.writeText(text); } catch (err) { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+    btn.textContent = '已複製，貼到 ChatGPT 或 Codex'; btn.classList.add('done'); setTimeout(() => { btn.textContent = '複製這句'; btn.classList.remove('done'); }, 2200); btn.blur();
+  });
+  b.querySelectorAll('select').forEach(s => s.addEventListener('change', () => s.blur()));
+});
+
+const deck = new Deck(); window.deck = deck;
+
+/* ===========================================
+   6. 檢查工具：在 ?qa 模式下跑 __qa()，列出超出畫面的元素
+   =========================================== */
+window.__qa = () => {
+  const out = [], W = innerWidth, H = innerHeight;
+  deck.slides.forEach((s, k) => {
+    deck.show(k, true);
+    s.querySelectorAll('.wrap *').forEach(el => {
+      if (el.closest('.screen, .ken, .burst, .chartwrap, .ba, .notes') || el.matches('.bignum, .clock, .gloss .tc, .dots, .dots i')) return;
+      const r = el.getBoundingClientRect(); if (!r.width || !r.height) return;
+      if (r.bottom > H - 30 || r.top < 34 || r.right > W + 1 || r.left < -1) out.push({ slide: k + 1, tag: el.tagName + '.' + el.className, top: Math.round(r.top), bottom: Math.round(r.bottom), right: Math.round(r.right), text: (el.textContent || '').trim().slice(0, 24) });
+    });
+  });
+  return out;
+};
+</script>
+</body>
+</html>

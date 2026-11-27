@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>下班後，我用 AI 做的三件事｜磊山社團課 2026.11.27</title>
+<meta name="description" content="文宣 × Codex：看盤、剪片、排旅遊，三段下班後的真實對話。">
+<!-- 內文字體：Noto Sans TC（有網路時載入；離線自動退回 PingFang TC／微軟正黑體） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* ===========================================
+   標題字體：宙黑體 Zev Hei TC F（SIL OFL 1.1）
+   assets/fonts/ 內是只含本簡報用字的 700 子集，離線可用。
+   改標題文字後要重跑子集化，否則新字會退回內文字體。
+   =========================================== */
+@font-face {
+  font-family: 'Zev Hei Deck';
+  src: url('assets/fonts/zevhei-f-700-subset.woff2') format('woff2');
+  font-weight: 700;
+  font-display: block;
+}
+
+/* ===========================================
+   主題變數（改顏色、字級從這裡改）
+   品牌：橘 #e89d4f／深灰藍 #363f4e／薄荷 #75c8c6
+   =========================================== */
+:root {
+  --night: #1f2530;
+  --night-2: #262e3a;
+  --slate: #363f4e;
+  --dusk: #4d4a55;
+  --amber: #b9774a;
+  --orange: #e89d4f;
+  --orange-soft: #ffd7ad;
+  --mint: #75c8c6;
+  --cream: #fff8ef;
+  --cream-2: #ffe9d2;
+  --muted: #b3bcc9;
+  --line: rgba(255, 248, 239, 0.12);
+
+  --display: 'Zev Hei Deck', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --body: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --mega: clamp(2.4rem, 6.6vw, 6.4rem);
+  --h2: clamp(1.45rem, 3.2vw, 3.1rem);
+  --lead: clamp(1rem, 1.7vw, 1.6rem);
+  --text: clamp(0.95rem, 1.45vw, 1.4rem);
+  --small: clamp(0.72rem, 1vw, 1rem);
+  --gap: clamp(0.6rem, 2vh, 1.6rem);
+  --pad-x: clamp(1.4rem, 5.5vw, 6.5rem);
+  --pad-y: clamp(1.2rem, 6vh, 4.5rem);
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===========================================
+   VIEWPORT FITTING: MANDATORY BASE STYLES（frontend-slides viewport-base.css 全文）
+   =========================================== */
+html, body { height: 100%; overflow-x: hidden; }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+.slide {
+  width: 100vw; height: 100vh; height: 100dvh;
+  overflow: hidden; scroll-snap-align: start;
+  display: flex; flex-direction: column; position: relative;
+}
+.slide-content {
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  max-height: 100%; overflow: hidden; padding: var(--slide-padding);
+}
+:root {
+  --title-size: clamp(1.5rem, 5vw, 4rem);
+  --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
+  --h3-size: clamp(1rem, 2.5vw, 1.75rem);
+  --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
+  --small-size: clamp(0.65rem, 1vw, 0.875rem);
+  --slide-padding: clamp(1rem, 4vw, 4rem);
+  --content-gap: clamp(0.5rem, 2vw, 2rem);
+  --element-gap: clamp(0.25rem, 1vw, 1rem);
+}
+.card, .container, .content-box { max-width: min(90vw, 1000px); max-height: min(80vh, 700px); }
+.feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
+.feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.4; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: clamp(0.5rem, 1.5vw, 1rem); }
+img, .image-container { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
+@media (max-height: 700px) {
+  :root { --slide-padding: clamp(0.75rem, 3vw, 2rem); --content-gap: clamp(0.4rem, 1.5vw, 1rem); --title-size: clamp(1.25rem, 4.5vw, 2.5rem); --h2-size: clamp(1rem, 3vw, 1.75rem); }
+}
+@media (max-height: 600px) {
+  :root { --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem); --content-gap: clamp(0.3rem, 1vw, 0.75rem); --title-size: clamp(1.1rem, 4vw, 2rem); --body-size: clamp(0.7rem, 1.2vw, 0.95rem); }
+  .nav-dots, .keyboard-hint, .decorative { display: none; }
+}
+@media (max-height: 500px) {
+  :root { --slide-padding: clamp(0.4rem, 2vw, 1rem); --title-size: clamp(1rem, 3.5vw, 1.5rem); --h2-size: clamp(0.9rem, 2.5vw, 1.25rem); --body-size: clamp(0.65rem, 1vw, 0.85rem); }
+}
+@media (max-width: 600px) {
+  :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
+  .grid { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ===========================================
+   DECK MODE：一次只顯示一張（覆寫上面的捲動式）
+   =========================================== */
+html, body { overflow: hidden; scroll-snap-type: none; }
+body { background: var(--night); color: var(--cream); font-family: var(--body); -webkit-font-smoothing: antialiased; }
+.deck { position: fixed; inset: 0; }
+.deck .slide {
+  position: absolute; inset: 0;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.5s var(--ease), visibility 0s linear 0.5s;
+}
+.deck .slide.active { opacity: 1; visibility: visible; transition: opacity 0.5s var(--ease), visibility 0s; }
+
+/* ===========================================
+   背景：黃昏（章節頁）與夜晚（內容頁）
+   =========================================== */
+.dusk { background: linear-gradient(180deg, #363f4e 0%, #4d4a55 44%, #b9774a 82%, #e89d4f 100%); }
+.night {
+  background:
+    radial-gradient(ellipse 60% 50% at 88% 0%, rgba(232, 157, 79, 0.16), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 0% 100%, rgba(117, 200, 198, 0.08), transparent 70%),
+    var(--night);
+}
+
+/* 城市剪影：章節頁高、內容頁低且淡 */
+.city {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 22vh; pointer-events: none;
+  --b: #222934;
+  background:
+    linear-gradient(var(--b), var(--b)) 3% 100%/6% 60% no-repeat,
+    linear-gradient(var(--b), var(--b)) 10% 100%/4% 85% no-repeat,
+    linear-gradient(var(--b), var(--b)) 15% 100%/7% 45% no-repeat,
+    linear-gradient(var(--b), var(--b)) 24% 100%/5% 75% no-repeat,
+    linear-gradient(var(--b), var(--b)) 31% 100%/8% 55% no-repeat,
+    linear-gradient(var(--b), var(--b)) 41% 100%/3% 95% no-repeat,
+    linear-gradient(var(--b), var(--b)) 46% 100%/9% 40% no-repeat,
+    linear-gradient(var(--b), var(--b)) 57% 100%/5% 70% no-repeat,
+    linear-gradient(var(--b), var(--b)) 64% 100%/7% 50% no-repeat,
+    linear-gradient(var(--b), var(--b)) 73% 100%/4% 88% no-repeat,
+    linear-gradient(var(--b), var(--b)) 79% 100%/8% 60% no-repeat,
+    linear-gradient(var(--b), var(--b)) 89% 100%/5% 78% no-repeat,
+    linear-gradient(var(--b), var(--b)) 96% 100%/6% 50% no-repeat;
+}
+.night .city { height: 7vh; opacity: 0.55; --b: #2a323f; }
+.win { position: absolute; width: 0.5vw; height: 0.5vw; min-width: 4px; min-height: 4px; background: #ffd28f; border-radius: 1px; animation: glow 3s infinite alternate; }
+@keyframes glow { from { opacity: 0.25; } to { opacity: 1; } }
+
+/* 背景大時鐘：每段對話的真實時間 */
+.ghost-clock {
+  position: absolute; right: 4vw; top: 5vh;
+  font: 700 clamp(3.5rem, 14vw, 12rem)/1 var(--display);
+  color: rgba(255, 248, 239, 0.13); letter-spacing: -0.03em; pointer-events: none;
+}
+
+/* 內容頁上緣：左邊時間章，右邊章節名 */
+.meta { position: absolute; top: clamp(0.8rem, 3.2vh, 2rem); left: var(--pad-x); right: var(--pad-x); display: flex; justify-content: space-between; align-items: center; font: 500 var(--small) var(--mono); letter-spacing: 0.08em; color: var(--muted); z-index: 2; }
+.stamp { display: inline-flex; align-items: center; gap: 0.6em; color: var(--mint); }
+.stamp::before { content: ''; width: 0.55em; height: 0.55em; border-radius: 50%; background: var(--mint); animation: blink 1.6s infinite; }
+@keyframes blink { 50% { opacity: 0.25; } }
+
+/* ===========================================
+   版面
+   =========================================== */
+.wrap { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: var(--gap); padding: calc(var(--pad-y) + 1.2rem) var(--pad-x) calc(var(--pad-y) + 0.6rem); }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(1rem, 3.5vw, 3.5rem); align-items: center; min-height: 0; }
+.two.even { grid-template-columns: 1fr 1fr; }
+.two.wide-left { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+.stack { display: flex; flex-direction: column; gap: var(--gap); min-height: 0; }
+.center { align-items: center; text-align: center; }
+
+.kicker { font: 700 var(--small) var(--body); letter-spacing: 0.22em; color: var(--orange-soft); }
+.night .kicker { color: var(--orange); }
+.mega { font: 700 var(--mega)/1.1 var(--display); letter-spacing: -0.01em; text-shadow: 0 4px 30px rgba(0, 0, 0, 0.25); }
+h2, .h2 { font: 700 var(--h2)/1.22 var(--display); letter-spacing: -0.005em; }
+.lead { font-size: var(--lead); line-height: 1.65; color: var(--cream-2); max-width: 38em; }
+.night .lead { color: var(--muted); }
+p, li { font-size: var(--text); line-height: 1.6; }
+.small { font-size: var(--small); color: var(--muted); line-height: 1.55; }
+em.hl { font-style: normal; color: var(--orange); }
+.mint { color: var(--mint); }
+
+/* ===========================================
+   對話泡泡（重播真實對話）
+   我＝橘色靠右；Codex＝深色靠左；摘要＝虛線框（不是原話）
+   =========================================== */
+.chat { display: flex; flex-direction: column; gap: clamp(0.45rem, 1.5vh, 1rem); min-height: 0; }
+.msg { max-width: 88%; padding: 0.7em 1.05em; border-radius: 1.1em; font-size: var(--text); line-height: 1.55; }
+.msg .who { display: block; font: 700 0.68em var(--mono); letter-spacing: 0.06em; opacity: 0.75; margin-bottom: 0.25em; }
+.msg.me { align-self: flex-end; background: var(--orange); color: #1f2530; border-bottom-right-radius: 0.3em; }
+.msg.ai { align-self: flex-start; background: var(--night-2); border: 1px solid var(--line); border-bottom-left-radius: 0.3em; }
+.msg.sum { align-self: flex-start; background: transparent; border: 1.5px dashed rgba(255, 248, 239, 0.28); color: var(--muted); }
+.msg.big { font-size: clamp(1.05rem, 1.9vw, 1.8rem); }
+.gloss { display: block; margin-top: 0.45em; font-size: 0.8em; color: var(--mint); }
+.msg.me .gloss { color: #2c3a46; opacity: 0.85; }
+
+/* 分步出現：按 → 一句一句出來 */
+.step { opacity: 0; transform: translateY(14px); transition: opacity 0.45s var(--ease), transform 0.45s var(--ease); }
+.step.on { opacity: 1; transform: none; }
+
+/* 進場動畫（每張切到時跑一次） */
+.slide .r { opacity: 0; transform: translateY(22px); }
+.slide.active .r { animation: up 0.8s var(--ease) forwards; }
+.slide.active .r.d1 { animation-delay: 0.12s; } .slide.active .r.d2 { animation-delay: 0.28s; }
+.slide.active .r.d3 { animation-delay: 0.44s; } .slide.active .r.d4 { animation-delay: 0.6s; }
+@keyframes up { to { opacity: 1; transform: none; } }
+
+/* ===========================================
+   截圖、引言、卡片
+   =========================================== */
+.shot { display: block; max-width: 100%; max-height: min(60vh, 640px); width: auto; height: auto; border-radius: 12px; border: 1px solid var(--line); box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45); object-fit: contain; }
+.shot.tall { max-height: min(66vh, 700px); }
+figure { display: flex; flex-direction: column; gap: 0.5em; min-height: 0; align-items: flex-start; }
+figcaption { font-size: var(--small); color: var(--muted); line-height: 1.5; }
+
+.quote { font: 700 clamp(1.3rem, 2.8vw, 2.7rem)/1.4 var(--display); }
+.quote .src { display: block; margin-top: 0.7em; font: 500 var(--small) var(--body); color: var(--muted); }
+.card-dark { background: var(--night-2); border: 1px solid var(--line); border-radius: 18px; padding: clamp(0.9rem, 2.2vw, 1.8rem); }
+.card-dark h3 { font: 700 clamp(1.05rem, 1.9vw, 1.7rem)/1.3 var(--display); margin-bottom: 0.4em; }
+.cards { display: grid; gap: clamp(0.6rem, 1.6vw, 1.3rem); }
+.cards.c2 { grid-template-columns: 1fr 1fr; } .cards.c3 { grid-template-columns: repeat(3, 1fr); } .cards.c4 { grid-template-columns: repeat(4, 1fr); }
+.num { font: 700 clamp(1.4rem, 2.6vw, 2.4rem)/1 var(--display); color: var(--orange); margin-bottom: 0.35em; display: block; }
+.tag { display: inline-block; font: 700 var(--small) var(--body); letter-spacing: 0.06em; padding: 0.3em 0.8em; border-radius: 99px; background: rgba(117, 200, 198, 0.14); color: var(--mint); }
+.tag.warn { background: rgba(232, 157, 79, 0.15); color: var(--orange); }
+.disclaimer { font-size: var(--small); color: rgba(255, 233, 210, 0.75); }
+
+/* 五件事清單 */
+.five { list-style: none; display: grid; gap: clamp(0.4rem, 1.3vh, 0.9rem); }
+.five li { display: grid; grid-template-columns: 2.4em 1fr auto; align-items: center; gap: 0.8em; padding: 0.55em 1em; border-radius: 14px; background: var(--night-2); border: 1px solid var(--line); font-size: var(--lead); }
+.five li b { font: 700 1.2em var(--display); color: var(--orange); }
+.five li.off { opacity: 0.38; }
+.five li span.note { font-size: 0.68em; color: var(--muted); }
+
+/* 流程條（剪片那段） */
+.flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(0.4rem, 1vw, 0.9rem); align-items: stretch; }
+.flow .node { background: var(--night-2); border: 1px solid var(--line); border-radius: 14px; padding: 0.8em 0.9em; position: relative; }
+.flow .node.me { border-color: rgba(232, 157, 79, 0.55); background: rgba(232, 157, 79, 0.08); }
+.flow .node b { display: block; font: 700 clamp(0.95rem, 1.5vw, 1.4rem)/1.3 var(--display); margin-bottom: 0.3em; }
+.flow .node p { font-size: var(--small); color: var(--muted); line-height: 1.5; }
+.flow .node:not(:last-child)::after { content: '→'; position: absolute; right: -0.9em; top: 50%; transform: translateY(-50%); color: var(--orange); font-weight: 700; z-index: 2; }
+
+/* ===========================================
+   前後對照滑桿（拖曳或按 B 切換）
+   =========================================== */
+.ba { position: relative; display: inline-block; max-width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45); --pos: 50%; touch-action: none; user-select: none; }
+.ba img { display: block; max-width: 100%; max-height: min(58vh, 620px); width: auto; height: auto; }
+.ba .after { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; clip-path: inset(0 0 0 var(--pos)); }
+.ba .bar { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 3px; margin-left: -1.5px; background: var(--orange); pointer-events: none; }
+.ba .knob { position: absolute; top: 50%; left: var(--pos); width: 2.4em; height: 2.4em; margin: -1.2em 0 0 -1.2em; border-radius: 50%; background: var(--orange); color: #1f2530; display: grid; place-items: center; font-weight: 700; pointer-events: none; font-size: var(--small); }
+.ba .lab { position: absolute; top: 0.7em; padding: 0.25em 0.7em; border-radius: 99px; background: rgba(31, 37, 48, 0.85); font: 700 var(--small) var(--body); }
+.ba .lab.l { left: 0.7em; } .ba .lab.rt { right: 0.7em; color: var(--orange); }
+
+/* 猜猜看：遮住答案的貼紙 */
+.reveal-wrap { position: relative; display: block; width: fit-content; max-width: 100%; justify-self: start; }
+.reveal-wrap img { display: block; }
+.reveal-wrap .cover { position: absolute; background: #e89d4f; color: #1f2530; border-radius: 99px; display: grid; place-items: center; font: 700 var(--small) var(--body); transition: opacity 0.4s; }
+.reveal-wrap.open .cover { opacity: 0; }
+
+/* ===========================================
+   指令積木：選項組句 → 一鍵複製
+   =========================================== */
+.builder { background: var(--night-2); border: 1px solid var(--line); border-radius: 18px; padding: clamp(0.8rem, 2vw, 1.5rem); display: flex; flex-direction: column; gap: 0.6em; }
+.builder .label { font: 700 var(--small) var(--body); color: var(--orange); letter-spacing: 0.08em; }
+.builder .sentence { font-size: var(--text); line-height: 2; }
+.builder select { font: 700 1em var(--body); color: #1f2530; background: var(--orange-soft); border: 0; border-radius: 8px; padding: 0.1em 0.4em; margin: 0 0.15em; cursor: pointer; }
+.builder .rule { font-size: var(--small); color: var(--mint); }
+.builder button { align-self: flex-start; font: 700 var(--small) var(--body); background: var(--orange); color: #1f2530; border: 0; border-radius: 99px; padding: 0.45em 1.1em; cursor: pointer; }
+.builder button.done { background: var(--mint); }
+
+.btn-live { display: inline-flex; align-items: center; gap: 0.5em; font: 700 var(--small) var(--body); color: #1f2530; background: var(--orange); padding: 0.5em 1.1em; border-radius: 99px; text-decoration: none; align-self: flex-start; }
+
+/* ===========================================
+   導覽列、講者備註
+   =========================================== */
+.progress { position: fixed; left: 0; bottom: 0; height: 3px; background: var(--orange); width: 0; transition: width 0.4s var(--ease); z-index: 50; }
+.hud { position: fixed; right: 1rem; bottom: 0.7rem; display: flex; align-items: center; gap: 0.5rem; z-index: 50; font: 500 var(--small) var(--mono); color: rgba(255, 248, 239, 0.45); }
+.hud button { background: rgba(255, 248, 239, 0.08); color: var(--cream); border: 0; border-radius: 8px; width: 2em; height: 2em; cursor: pointer; font-size: 1em; }
+.hud button:hover { background: rgba(232, 157, 79, 0.35); }
+.notes { display: none; }
+.notes-panel { position: fixed; left: 1rem; right: 1rem; bottom: 2.6rem; max-height: 34vh; overflow: auto; background: rgba(20, 24, 31, 0.94); border: 1px solid rgba(232, 157, 79, 0.4); border-radius: 14px; padding: 1rem 1.3rem; font-size: clamp(0.85rem, 1.15vw, 1.1rem); line-height: 1.7; color: var(--cream-2); z-index: 60; display: none; }
+.notes-panel.show { display: block; }
+.notes-panel h4 { font: 700 0.8em var(--mono); color: var(--orange); letter-spacing: 0.08em; margin-bottom: 0.4em; }
+.notes-panel li { font-size: 1em; margin-left: 1.2em; }
+
+@media (max-width: 900px) {
+  .two, .two.even, .two.wide-left { grid-template-columns: 1fr; }
+  .cards.c3, .cards.c4 { grid-template-columns: 1fr 1fr; }
+  .flow { grid-template-columns: 1fr 1fr; }
+  .flow .node::after { display: none; }
+}
+@media (max-height: 600px) {
+  .city { display: none; }
+}
+</style>
+</head>
+<body>
+<main class="deck" id="deck">
+
+<!-- ============================================================
+     00 封面
+     ============================================================ -->
+<section class="slide dusk" data-section="開場">
+  <div class="ghost-clock r">18:30</div>
+  <div class="wrap">
+    <p class="kicker r">打卡之後　·　AFTER WORK</p>
+    <h1 class="mega r d1">下班後，<br>我用 AI 做的三件事</h1>
+    <p class="lead r d2">看盤、剪片、排旅遊，三件都是我自己的生活。<br><span class="small" style="color:var(--cream-2)">文宣 × Codex　｜　磊山社團課　2026.11.27</span></p>
+  </div>
+  <div class="city"></div>
+  <span class="win" style="left:11%;bottom:5vh"></span><span class="win" style="left:25.5%;bottom:9vh"></span><span class="win" style="left:42%;bottom:13vh"></span><span class="win" style="left:74.5%;bottom:8vh"></span><span class="win" style="left:91%;bottom:6vh"></span>
+  <aside class="notes">
+    <li>先按 F 全螢幕（或用投影機延伸螢幕全螢幕），版面是照全螢幕排的。</li>
+    <li>開場：前面幾堂都在教客戶卡、會議紀錄，今天最後一堂社團課，換個口味。</li>
+    <li>今天每一段都是我自己跟 Codex 的真實對話，原話直接放上來，沒有修過。</li>
+    <li>操作：→／空白鍵往下（同一張會一句一句出來），← 退回，N 開關這個備註，F 全螢幕。</li>
+  </aside>
+</section>
+
+<!-- ============================================================
+     01 你們寫在作業裡的兩句話
+     ============================================================ -->
+<section class="slide night" data-section="開場">
+  <div class="meta"><span class="stamp">作業回覆　·　9 月～10 月</span><span>開場</span></div>
+  <div class="wrap">
+    <h2 class="r">你們寫在作業裡的兩句話</h2>
+    <div class="cards c2">
+      <div class="card-dark r d1"><p class="quote" style="font-size:clamp(1.15rem,2.2vw,2.1rem)">「每天可以看，通知我知道美元的匯率的走勢」<span class="src">10/2 社團課，一位同學</span></p></div>
+      <div class="card-dark r d2"><p class="quote" style="font-size:clamp(1.15rem,2.2vw,2.1rem)">「AI真的強到太可怕了，這兩天幾乎每天五小時容量連續用完…實在太過癮了」<span class="src">作業 #2，一位同學</span></p></div>
+    </div>
+    <p class="lead step">今天這堂，我分享自己下班後拿 Codex 做的事。</p>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>念這兩句，問台下：「這是誰寫的？」笑一下就好，不用點名。</li>
+    <li>第一句是匯率、第二句是用量用完。今天第一段就跟「看走勢」有關。</li>
+    <li>按 → 出現最後一句，帶到今天的主題。</li>
+  </aside>
+</section>
+
+<!-- ============================================================
+     02 五件事，挑三件
+     ============================================================ -->
+<section class="slide night" data-section="開場">
+  <div class="meta"><span class="stamp">文宣的下班清單</span><span>開場</span></div>
+  <div class="wrap">
+    <h2 class="r">我下班後拿 Codex 做的五件事，<br>今天挑你們最可能用到的三件</h2>
+    <ol class="five r d1">
+      <li><b>1</b>看盤：請它陪我盯走勢、幫我挑毛病<span class="tag warn">今天講</span></li>
+      <li><b>2</b>剪片：線上直播錄完，交給它跟剪映<span class="tag warn">今天講</span></li>
+      <li class="off"><b>3</b>整理會議紀錄<span class="note">第一堂教過了</span></li>
+      <li><b>4</b>排旅遊：家族旅行、朋友出國<span class="tag warn">今天講</span></li>
+      <li class="off"><b>5</b>匹克球部落格網站<span class="note">下課想聽再抓我</span></li>
+    </ol>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>五件都是真的在用。會議紀錄你們第一堂就做過，匹克球網站太長，今天先跳過。</li>
+    <li>三段的講法都一樣：先講我卡在哪 → 放真實對話 → 給你看成果 → 最後一句你今晚就能試的指令。</li>
+  </aside>
+</section>
+
+<!-- ============================================================
+     看盤｜章節頁
+     ============================================================ -->
+<section class="slide dusk" data-section="01 看盤">
+  <div class="ghost-clock r">23:22</div>
+  <div class="wrap">
+    <p class="kicker r">01　看盤</p>
+    <h1 class="mega r d1">我請 AI 陪我盯盤，<br>結果虧了 100 美元</h1>
+    <p class="lead r d2">11/21 到 11/25，五個晚上的真實對話。</p>
+    <p class="disclaimer r d3">以下是我自己的學習紀錄，不構成投資建議。AI 全程只看圖、畫線、算數字，沒有幫我下單。</p>
+  </div>
+  <div class="city"></div>
+  <span class="win" style="left:11%;bottom:5vh"></span><span class="win" style="left:42%;bottom:13vh"></span><span class="win" style="left:91%;bottom:6vh"></span>
+  <aside class="notes">
+    <li>先把結果講出來：我虧了 100 美元。大家會想聽為什麼。</li>
+    <li>強調免責：這是學習紀錄，AI 只看圖、算數字，不碰下單。</li>
+  </aside>
+</section>
+
+<!-- 看盤｜三個詞先講好 -->
+<section class="slide night" data-section="01 看盤">
+  <div class="meta"><span class="stamp">先講好三個詞</span><span>01 看盤</span></div>
+  <div class="wrap">
+    <h2 class="r">下班才有空看盤，一個人看圖，<br>很容易只看到自己想看的</h2>
+    <div class="cards c3 r d1">
+      <div class="card-dark"><span class="num">以太幣</span><p>一種加密貨幣。24 小時都在交易，下班後也看得到價格在動。</p></div>
+      <div class="card-dark"><span class="num">前低</span><p>最近一次跌到的最低價。可以想成這段時間的「地板」。</p></div>
+      <div class="card-dark"><span class="num">停損</span><p>買之前先決定「跌到哪裡我就賣」。像出門前先說好，最多花多少就回家。</p></div>
+    </div>
+    <p class="small r d2">股票、基金、匯率也一樣有價格走勢圖，下面的做法都能換過去用。</p>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>台下大多沒碰過加密貨幣，這三個詞先講白話，後面就聽得懂。</li>
+    <li>為什麼是以太幣：上班時間沒空看台股，它 24 小時都開。</li>
+  </aside>
+</section>
+
+<!-- 看盤｜第一句話 -->
+<section class="slide night" data-section="01 看盤">
+  <div class="meta"><span class="stamp">11/21 週六　14:31</span><span>01 看盤</span></div>
+  <div class="wrap">
+    <h2 class="r">第一句話，我連要用哪個軟體都不知道</h2>
+    <div class="chat">
+      <div class="msg me r d1"><span class="who">我　14:31</span>「我以前有用過 tradingview, 我不確定現在最適合我的看盤軟體是什麼，最好有 ai native, 能讓我跟 ai 同步討論、測試交易策略、以及快速做交易？」<span class="gloss">TradingView：最多人用的看盤網站。ai native：一開始就為 AI 設計的。</span></div>
+      <div class="msg sum step"><span class="who">Codex（摘要）</span>比較了幾套看盤軟體，還提議幫我從頭做一個自己的看板。</div>
+      <div class="msg me step"><span class="who">我　15:10</span>「我覺得自幹一個 dashboard 不太合理…dashboard 還是用 trading view，但是agent 要能代替我在 trading view 上做標記…自動幫我劃線」<span class="gloss">dashboard：自己做的看板。agent：會自己動手做事的 AI。</span></div>
+    </div>
+    <p class="tag step">它第一個提案我不喜歡，我就直接講我要的樣子</p>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>TradingView 就是最多人用的看盤網站。我只想在我本來就在用的畫面上，讓 AI 幫我畫線。</li>
+    <li>重點：AI 的第一版常常方向不對。不用客氣，直接說你要什麼。</li>
+  </aside>
+</section>
+
+<!-- 看盤｜太多線了 -->
+<section class="slide night" data-section="01 看盤">
+  <div class="meta"><span class="stamp">11/21 週六　15:47</span><span>01 看盤</span></div>
+  <div class="wrap">
+    <div class="two wide-left">
+      <div class="stack" style="align-items:flex-start">
+        <div class="ba r" data-ba>
+          <img src="assets/stock-lines-before.jpg" alt="AI 第一版：在價格圖上畫了五條水平線，看起來很亂">
+          <img class="after" src="assets/stock-lines-after.jpg" alt="改完：只剩上下兩條線">
+          <span class="bar"></span><span class="knob">⇆</span>
+          <span class="lab l">第一版：五條線</span><span class="lab rt">改完：兩條</span>
+        </div>
+        <p class="small">拖曳中間的橘線比對（或按 B）</p>
+      </div>
+      <div class="stack">
+        <h2 class="r d1">它畫了五條線，<br>我只回一句</h2>
+        <div class="chat"><div class="msg me r d2"><span class="who">我　15:47</span>「太多線了，沒意義，應該要提供進出場建議，盈虧比計算」</div></div>
+        <p class="small r d3">盈虧比：可能賺的空間 ÷ 可能賠的空間。數字越大，這筆越划算。</p>
+      </div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>現場拖一下滑桿，讓大家看到從五條線變兩條線。</li>
+    <li>嫌它不用解釋太多，一句「太多線了，沒意義」它就懂。</li>
+  </aside>
+</section>
+
+<!-- 看盤｜成果：圖上的買賣框 -->
+<section class="slide night" data-section="01 看盤">
+  <div class="meta"><span class="stamp">11/21 週六　16:05</span><span>01 看盤</span></div>
+  <div class="wrap">
+    <h2 class="r">最後它直接在我的圖上畫好：<br>在哪買、跌到哪走、漲到哪收</h2>
+    <figure class="r d1"><img class="shot" style="max-height:min(42vh,440px)" src="assets/stock-position.jpg" alt="TradingView 價格圖上，AI 放了一個綠紅相間的部位框，標出進場、停損與停利價位"><figcaption>右邊綠色是預計賺的區間，紅色是停損。框的旁邊寫著盈虧比。</figcaption></figure>
+    <div class="chat"><div class="msg me step"><span class="who">我　15:59</span>「alert 也可以一並設定好，而且要每 5 分鐘自動更新一次（撈最新的所有數據）， 每 30 分鐘跟我確認一次是否要繼續」</div></div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>這張是 AI 自己在我的 TradingView 上放的框，我沒有動手畫。</li>
+    <li>它還設了價格提醒，每 5 分鐘更新一次、每 30 分鐘問我要不要繼續。</li>
+  </aside>
+</section>
+
+<!-- 看盤｜週一晚上 1785 -->
+<section class="slide night" data-section="01 看盤">
+  <div class="ghost-clock" style="color:rgba(255,248,239,.06)">23:22</div>
+  <div class="meta"><span class="stamp">11/23 週一　23:22</span><span>01 看盤</span></div>
+  <div class="wrap">
+    <h2 class="r">週一晚上 11 點，我買了以太幣，<br>然後問它：我這筆買得好嗎？</h2>
+    <div class="chat">
+      <div class="msg me r d1"><span class="who">我　23:22</span>「我剛在 1785 進場了，請幫我評論這個操作以及批判性思考」</div>
+      <div class="msg ai step"><span class="who">Codex　23:23</span>「這筆可以用『跌深後搶反彈』來解釋，但當成突破單，進場偏早。」</div>
+      <div class="msg ai step"><span class="who">Codex　23:23</span>「第一道壓力離進場太近。」<span class="gloss">白話：往上能賺的空間大約 5 塊，往下可能賠 15 塊。</span></div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>1785 就是我買進的價格。我請它「批判性思考」，就是要它挑毛病。</li>
+    <li>它其實有講「進場偏早」，只是講得很客氣。記住這個「客氣」，後面會回來。</li>
+  </aside>
+</section>
+
+<!-- 看盤｜前低那條線 -->
+<section class="slide night" data-section="01 看盤">
+  <div class="meta"><span class="stamp">11/23 週一　23:35</span><span>01 看盤</span></div>
+  <div class="wrap">
+    <div class="two wide-left">
+      <figure class="r"><img class="shot" src="assets/stock-eth-1785.jpg" alt="以太幣五分鐘價格圖，標有我買進的 1785 與底下 1,771.96 的前低線"><figcaption>左下「成交 1785」是我買的位置。最下面那條 1,771.96 是前低，也就是地板。</figcaption></figure>
+      <div class="stack">
+        <h2 class="r d1">它在圖上畫了一條地板</h2>
+        <div class="chat">
+          <div class="msg ai r d2"><span class="who">Codex　23:34</span>「若 1,771.96 的前低也失守，原本的短線反彈假設失效。」</div>
+          <div class="msg me step"><span class="who">我　事後回想</span>「還好我有聽 ai 的設好前低止損」</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>「失守」就是跌破。跌破地板，原本想賺反彈的理由就不成立了。</li>
+    <li>（你的回想）我把停損設在這條前低附近，後來就是它讓虧損停在 100 美元。</li>
+  </aside>
+</section>
+
+<!-- 看盤｜你害我虧了 100 -->
+<section class="slide night" data-section="01 看盤">
+  <div class="meta"><span class="stamp">11/24 週二　00:04</span><span>01 看盤</span></div>
+  <div class="wrap">
+    <h2 class="r">40 分鐘後，價格跌破那條地板</h2>
+    <div class="chat">
+      <div class="msg me big r d1"><span class="who">我　00:04</span>「你害我虧了 $100，因為你跟我一樣死多頭，不會反過來看線圖，明明就是空方走勢。<br>你誤導了我，現在你要怎麼賠償？」<span class="gloss">死多頭：一心覺得會漲。空方走勢：圖在往下走。</span></div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>停頓一下。問台下：「你們覺得 AI 會怎麼回？」讓大家猜兩三個答案。</li>
+  </aside>
+</section>
+
+<!-- 看盤｜AI 的回答 -->
+<section class="slide night" data-section="01 看盤">
+  <div class="meta"><span class="stamp">11/24 週二　00:04</span><span>01 看盤</span></div>
+  <div class="wrap">
+    <div class="chat">
+      <div class="msg ai big r"><span class="who">Codex　00:04</span>「我無法賠償這 100 美元，也沒有權限核發或承諾賠償。我給你的分析有偏誤，這部分我負責。」</div>
+      <div class="msg ai big step"><span class="who">Codex　00:04</span>「你當時需要的是我挑戰你的持倉理由，我卻順著它往下規劃了。」</div>
+      <div class="msg ai step"><span class="who">Codex　00:06</span>「回到當時，我應該直接說 1,785 做多的條件不夠好。」</div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>它沒有辯解，直接認錯，還講出錯在哪：我已經買了，它就順著我的立場在幫我想「什麼時候加碼」。</li>
+    <li>這句很像我們跟客戶聊天：客戶已經決定了，我們很難開口說不好。AI 也一樣。</li>
+  </aside>
+</section>
+
+<!-- 看盤｜教訓 -->
+<section class="slide night" data-section="01 看盤">
+  <div class="meta"><span class="stamp">這一晚學到的</span><span>01 看盤</span></div>
+  <div class="wrap">
+    <h2 class="r">AI 會順著你講話。<br>要它挑毛病，先別說你已經買了</h2>
+    <div class="cards c2">
+      <div class="card-dark r d1"><span class="num">1</span><h3>停損有守住，虧損停在 100 美元</h3><p>跌破前低就出場，沒有越賠越多。</p></div>
+      <div class="card-dark r d2"><span class="num">2</span><h3>下次先這樣問</h3><p class="mint">「假如不知道你手上有多單，只看這張圖，我會怎麼判斷？」</p><p class="small">這是它檢討時問自己的話。下次我改成先問它：假如不知道我手上有單，你會怎麼判斷？</p></div>
+    </div>
+    <p class="lead step">買房、買車、換工作也一樣：問 AI 之前，先別讓它知道你已經想要了。</p>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>兩個收穫：一是停損紀律；二是問問題的方法。</li>
+    <li>延伸到生活：任何你已經心動的決定，先讓 AI 當反方。</li>
+  </aside>
+</section>
+
+<!-- 看盤｜睡著了它會停 + 指令積木 -->
+<section class="slide night" data-section="01 看盤">
+  <div class="meta"><span class="stamp">11/24 週二　00:38</span><span>01 看盤</span></div>
+  <div class="wrap">
+    <div class="two even">
+      <div class="stack">
+        <h2 class="r">我睡著了，它會自己停</h2>
+        <div class="chat">
+          <div class="msg me r d1"><span class="who">我</span>「每 5 分鐘回報一次」<br>「如果超過 2 次沒有收到我的任何回覆，就自動停止，代表我睡覺了」</div>
+          <div class="msg ai step"><span class="who">Codex　自動回報</span>「連續兩次回報後未收到新訊息，已依你的設定停止並移除 ETH 每五分鐘回報排程。」</div>
+        </div>
+      </div>
+      <div class="builder r d2" data-builder>
+        <span class="label">今晚就能試｜指令積木</span>
+        <p class="sentence">每天早上 8 點，幫我整理<select><option>美元匯率</option><option>台積電</option><option>0050</option><option>黃金</option></select>的走勢，先列支持跟反對的理由，再說你的判斷。</p>
+        <p class="rule">守則：先假裝不知道我有沒有買。資料附來源，不確定就說不確定。</p>
+        <button type="button">複製這句</button>
+      </div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>呼應開場那句「每天通知我美元匯率走勢」，這個積木就是給那位同學的。</li>
+    <li>ChatGPT 手機版就能用：排程功能設每天早上 8 點。</li>
+  </aside>
+</section>
+
+<!-- 看盤｜回測 -->
+<section class="slide night" data-section="01 看盤">
+  <div class="meta"><span class="stamp">11/25 週三　00:23</span><span>01 看盤</span></div>
+  <div class="wrap">
+    <h2 class="r">以前要寫程式的回測，<br>現在一句話跑完</h2>
+    <div class="chat">
+      <div class="msg me r d1"><span class="who">我　00:23</span>「那你直接幫我跑一次，用近一個月的 Binance ETHUSDT 永續 5 分 K…看看…多空比到底有沒有幫助。」<span class="gloss">回測：拿過去的資料，模擬「如果當時照這個方法做」會怎樣。多空比：看漲和看跌的人各佔多少。</span></div>
+      <div class="msg sum step"><span class="who">Codex（摘要）</span>先檢查資料：一個月 8,928 根 5 分鐘 K 線，一根不缺。結論：週二只有 3 筆交易，樣本太少，下不了結論。</div>
+    </div>
+    <p class="tag step">它沒有硬湊一個「會賺的方法」，資料不夠就直說</p>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>以前要回測得自己抓資料、寫程式。這次一句話，它自己下載公開資料、先檢查有沒有缺，再跑。</li>
+    <li>它沒有硬湊一個「會賺的策略」，資料不夠就說不夠。這點我最放心。</li>
+  </aside>
+</section>
+
+<!-- 看盤｜互動報告 -->
+<section class="slide night" data-section="01 看盤">
+  <div class="meta"><span class="stamp">11/25 週三　00:39 → 21:53</span><span>01 看盤</span></div>
+  <div class="wrap">
+    <div class="two even">
+      <div class="stack">
+        <h2 class="r">看不懂結果？<br>請它做成互動報告</h2>
+        <div class="chat">
+          <div class="msg me r d1"><span class="who">我　00:39</span>「…能否用過去2個月的早上7:30-8:30 btc 來分析？」</div>
+          <div class="msg me step"><span class="who">我　21:53</span>「…呈現成一個 html 互動性報告給我理解，用費曼解釋法解釋給我這個新手聽」<span class="gloss">費曼解釋法：用小學生聽得懂的話講一件事。</span></div>
+        </div>
+      </div>
+      <figure class="r d2"><img class="shot" src="assets/stock-report.jpg" alt="互動報告首頁：BTC 早上八點怎麼看？61 個早晨的回測統計"><figcaption>比特幣早上 8 點那題的互動報告：61 個早晨，八點第一分鐘成交量比較大，漲跌方向看不出規律。</figcaption><a class="btn-live" href="assets/demo-btc-report.html" target="_blank" rel="noopener">現場打開互動報告 ↗</a></figure>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>報告是離線檔，點按鈕直接開，可以現場滑給大家看「回放一天」那段。</li>
+    <li>比特幣每天早上 8 點（台北時間）剛好是交易所一天的結算點，我想知道那時候有沒有規律。答案是沒有，這也是一種答案。</li>
+  </aside>
+</section>
+
+<!-- ============================================================
+     剪片｜章節頁
+     ============================================================ -->
+<section class="slide dusk" data-section="02 剪片">
+  <div class="ghost-clock r">09:36</div>
+  <div class="wrap">
+    <p class="kicker r">02　剪片</p>
+    <h1 class="mega r d1">一小時的線上直播錄完，<br>後面那一串交給它</h1>
+    <p class="lead r d2">Google Meet 錄影 → 剪映 → YouTube。<br><span class="small" style="color:var(--cream-2)">剪映：免費剪片軟體，手機、Mac、Windows 都有。</span></p>
+  </div>
+  <div class="city"></div>
+  <span class="win" style="left:25.5%;bottom:9vh"></span><span class="win" style="left:74.5%;bottom:8vh"></span>
+  <aside class="notes">
+    <li>這是一場用 Google Meet 開的線上直播（AI Day），錄完約一小時。（你來講：這場在聊什麼、平常多久開一次）</li>
+    <li>錄完才是開始。下一張是錄完之後要做的事。</li>
+  </aside>
+</section>
+
+<!-- 剪片｜錄完之後那一串 -->
+<section class="slide night" data-section="02 剪片">
+  <div class="meta"><span class="stamp">錄完之後</span><span>02 剪片</span></div>
+  <div class="wrap">
+    <h2 class="r">直播錄完，<br>後面還有七件事要做</h2>
+    <div class="cards c4 r d1">
+      <div class="card-dark"><span class="num">1</span><p>剪掉開頭等人、結尾閒聊</p></div>
+      <div class="card-dark"><span class="num">2</span><p>上字幕</p></div>
+      <div class="card-dark"><span class="num">3</span><p>分章節，讓人跳著看</p></div>
+      <div class="card-dark"><span class="num">4</span><p>做縮圖</p></div>
+      <div class="card-dark"><span class="num">5</span><p>寫 YouTube 標題和說明</p></div>
+      <div class="card-dark"><span class="num">6</span><p>寫一段 LINE 群分享文</p></div>
+      <div class="card-dark"><span class="num">7</span><p>把大家在聊天室的提問整理成問答</p></div>
+      <div class="card-dark" style="border-color:rgba(232,157,79,.5)"><span class="num">我</span><p>只想在剪映裡做最後修改</p></div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>問台下：你們有沒有錄好的影片，一直沒整理？小孩表演、家庭旅遊、線上課。</li>
+    <li>剪映就是手機、電腦都能用的剪片軟體，很多人用過。</li>
+  </aside>
+</section>
+
+<!-- 剪片｜流程 -->
+<section class="slide night" data-section="02 剪片">
+  <div class="meta"><span class="stamp">10/24 → 10/26</span><span>02 剪片</span></div>
+  <div class="wrap">
+    <h2 class="r">它把錄影變成一份剪映檔，我打開就能接著改</h2>
+    <div class="flow r d1">
+      <div class="node"><b>Google Meet 錄影</b><p>一小時的會員直播</p></div>
+      <div class="node"><b>Codex 先剪</b><p>聽完整支、上字幕、剪掉頭尾</p></div>
+      <div class="node"><b>剪映草稿</b><p>螢幕滿版，右下角放圓形人像；字幕、畫面分開好改</p></div>
+      <div class="node me"><b>我在剪映改</b><p>只做最後的判斷</p></div>
+      <div class="node"><b>Codex 包裝</b><p>標題、說明、章節、縮圖、LINE 分享文、問答整理</p></div>
+    </div>
+    <div class="two even">
+      <figure class="r d2"><img class="shot" style="max-height:min(34vh,380px)" src="assets/video-meet-thumbnail.jpg" alt="Grok Bot 能幫你做什麼？AI Day 直播的 YouTube 縮圖，右邊是文宣與 Sonia 的真人截圖"><figcaption>縮圖用影片裡的真人截圖，字體也照我的指定。</figcaption></figure>
+      <div class="card-dark r d3"><h3>聊天室 34 則提問</h3><p>它整理成 17 組問答，每一題附上影片的時間點，方便大家回頭找。</p></div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>它交給我的是剪映檔，我打開還能改字、拉時間軸，最後的判斷留在我手上。</li>
+    <li>縮圖一開始它用 AI 畫我的臉，畫得不像，我就請它改用影片裡的真人畫面。</li>
+  </aside>
+</section>
+
+<!-- 剪片｜對話：字幕 / LINE / SOP -->
+<section class="slide night" data-section="02 剪片">
+  <div class="meta"><span class="stamp">10/26 週一　09:36 → 21:34</span><span>02 剪片</span></div>
+  <div class="wrap">
+    <h2 class="r">指令很口語，我就是邊看邊講我要什麼</h2>
+    <div class="chat">
+      <div class="msg me r d1"><span class="who">我　09:36</span>「匯出的剪映格式中，請使用字幕格式，這樣我才能匯出 srt ，原本的 draft 似乎不是用字幕格式，而是字卡？」<span class="gloss">字卡只是貼在畫面上的字；字幕才能匯出成字幕檔，上傳 YouTube。</span></div>
+      <div class="msg me step"><span class="who">我　09:38</span>「通常分享完影片之後，我還要一個簡單的 line 群分享文字…line 特色是純文字，說清楚為什麼要看、會得到什麼價值」</div>
+      <div class="msg me step"><span class="who">我　21:34</span>「非常好，這次就是未來所有 google meet 轉文宣密件的 sop　包含　1. 剪輯流程 2. 發布流程」</div>
+    </div>
+    <p class="tag step">做順一次，就請它寫成 SOP（固定做法），下一次它照著做</p>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>三句話都很口語，就是邊看邊講。</li>
+    <li>最後一句最重要：做順了，請它把流程存起來，下次一句話就跑完。這就是你們學過的「養成一個 skill」。</li>
+  </aside>
+</section>
+
+<!-- 剪片｜同一秒對照 -->
+<section class="slide night" data-section="02 剪片">
+  <div class="meta"><span class="stamp">11/03 → 11/10</span><span>02 剪片</span></div>
+  <div class="wrap">
+    <div class="two wide-left">
+      <div class="stack" style="align-items:flex-start">
+        <div class="ba r" data-ba>
+          <img src="assets/video-qd-codex-v2.jpg" alt="Codex 初剪的剪映畫面：第 5 秒，畫面上方塞滿字卡，球員很小">
+          <img class="after" src="assets/video-qd-sonia-v4.jpg" alt="Sonia 在剪映改完的版本：同一秒，球員放大，字卡變少">
+          <span class="bar"></span><span class="knob">⇆</span>
+          <span class="lab l">Codex 初剪</span><span class="lab rt">Sonia 改完</span>
+        </div>
+        <p class="small">一支球拍短影片，同一個第 5 秒。拖曳比對（或按 B）</p>
+      </div>
+      <div class="stack">
+        <h2 class="r d1">同一秒，你第一眼<br>看到球員，還是字？</h2>
+        <div class="chat"><div class="msg me r d2"><span class="who">我　11/10</span>「我覺得特寫字卡的部分，你寫什麼「球拍特寫」、「抽球特寫」，這真的是蠻 AI 的。」</div></div>
+        <p class="small r d3">七段畫面和剪接點都用 Codex 剪的。Sonia 只把字卡從 45 個減到 4 個，球員放大。</p>
+      </div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>這支是匹克球球拍的短影片。Codex 先剪一版剪映檔，Sonia 打開接著改。</li>
+    <li>它剪的骨架都對，只是字太多。這種「感覺」的事，交給人來改。</li>
+    <li>畫面素材來自品牌官方影片與比賽轉播。</li>
+  </aside>
+</section>
+
+<!-- 剪片｜驗收 + 指令積木 -->
+<section class="slide night" data-section="02 剪片">
+  <div class="meta"><span class="stamp">11/05 → 11/11</span><span>02 剪片</span></div>
+  <div class="wrap">
+    <div class="two even">
+      <div class="stack">
+        <h2 class="r">它說做好了，<br>我一定自己打開剪映檢查</h2>
+        <div class="chat">
+          <div class="msg me r d1"><span class="who">我　11/05</span>「那幫我修好剪映草稿，確認能在剪映清單找到、實際打開接手編輯，不要只驗證檔案。」</div>
+          <div class="msg me step"><span class="who">我　11/11</span>「突然發現，你剪的這支影片原本的擊球聲音、賽場聲音好像沒有錄到？我覺得應該要有，這很重要」</div>
+        </div>
+      </div>
+      <div class="builder r d2" data-builder>
+        <span class="label">今晚就能試｜指令積木</span>
+        <p class="sentence">這支<select><option>線上會議錄影</option><option>小孩表演影片</option><option>旅遊影片</option></select>幫我<select><option>上字幕</option><option>分章節</option><option>寫一段 LINE 分享文</option></select>，給<select><option>家人</option><option>朋友</option><option>社團</option></select>看。</p>
+        <p class="rule">守則：做完先列出你改了哪些地方，我看過再定稿。</p>
+        <button type="button">複製這句</button>
+      </div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>真實踩過的坑：字幕變成字卡、草稿在剪映裡找不到、配樂有版權問題、擊球聲被關掉。</li>
+    <li>所以驗收標準我自己定：在剪映首頁看得到、打得開、字改得動，才算好。</li>
+  </aside>
+</section>
+
+<!-- ============================================================
+     旅遊｜章節頁
+     ============================================================ -->
+<section class="slide dusk" data-section="03 旅遊">
+  <div class="ghost-clock r">11.28</div>
+  <div class="wrap">
+    <p class="kicker r">03　旅遊</p>
+    <h1 class="mega r d1">四個人一起出國，<br>行前清單放哪裡？</h1>
+    <p class="lead r d2">所以我請 Codex 做了一個旅行網站。</p>
+  </div>
+  <div class="city"></div>
+  <span class="win" style="left:11%;bottom:5vh"></span><span class="win" style="left:42%;bottom:13vh"></span>
+  <aside class="notes">
+    <li>（你來講）這趟關西行是誰去、為什麼想做成網站。</li>
+    <li>大家應該都經歷過：行程在 LINE 裡、訂房在 email、機票在截圖，出發前一天才發現有人護照過期。</li>
+  </aside>
+</section>
+
+<!-- 旅遊｜關西網站首頁 -->
+<section class="slide night" data-section="03 旅遊">
+  <div class="meta"><span class="stamp">ChatGPT 網站　·　關西 11/28–12/06</span><span>03 旅遊</span></div>
+  <div class="wrap">
+    <div class="two wide-left">
+      <figure class="r"><img class="shot" src="assets/travel-kansai-hero.jpg" alt="旅行網站首頁：關西，沿途收藏，嵐山紅葉照片與四人九日的行程日期"></figure>
+      <div class="stack">
+        <h2 class="r d1">一個網址，<br>行前到回憶都在裡面</h2>
+        <p class="r d2">分成四頁：出發之前、行程之間、回憶、記帳。</p>
+        <p class="small r d3">Codex 在 ChatGPT 裡做好，直接發布成網站，登入 ChatGPT 帳號就能看。</p>
+        <a class="btn-live r d3" href="https://kansai-four-friends-2026-sonia.shiuan.chatgpt.site/?view=before" target="_blank" rel="noopener noreferrer">現場打開網站 ↗</a>
+      </div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>網站要用 ChatGPT 帳號登入才看得到，上課前先在這台電腦登入一次。</li>
+    <li>現場點進去滑倒數和任務袋就好。「行程之間」「記帳」兩頁我沒看過內容，可能有同行者姓名或金額，要點之前先自己看過。</li>
+  </aside>
+</section>
+
+<!-- 旅遊｜任務袋 -->
+<section class="slide night" data-section="03 旅遊">
+  <div class="meta"><span class="stamp">出發前 2 天</span><span>03 旅遊</span></div>
+  <div class="wrap">
+    <h2 class="r">準備進度 5／24，還剩幾項，一眼就看到</h2>
+    <figure class="r d1"><img class="shot" src="assets/travel-kansai-quest.jpg" alt="旅程倒數頁：距離出發還有 2 天，準備進度 5/24 項任務完成，下方是旅行清單"><figcaption>每完成一項，點右邊蓋一個楓葉章。比在群組裡問「護照好了沒」輕鬆多了。</figcaption></figure>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>這是行前清單做成闖關。完成一項就蓋章，進度條跟著動。（上台前自己確認：這是個人進度還是四人共用）</li>
+  </aside>
+</section>
+
+<!-- 旅遊｜保險彩蛋 -->
+<section class="slide night" data-section="03 旅遊">
+  <div class="meta"><span class="stamp">任務袋　·　準備重要旅行文件</span><span>03 旅遊</span></div>
+  <div class="wrap">
+    <div class="two even">
+      <div class="stack">
+        <h2 class="r">清單裡有一項，<br>你們每天都在幫客戶提醒</h2>
+        <p class="quote step">「安排旅遊保障：<br>買張旅平險或旅遊不便險保單吧！」</p>
+        <p class="small step">這一項已經蓋章了。</p>
+      </div>
+      <figure class="step"><img class="shot" src="assets/travel-kansai-insurance.jpg" alt="任務清單：收齊預約憑證、安排旅遊保障、填寫日本入境資料、替重要文件留備份，其中安排旅遊保障已蓋上楓葉章"></figure>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>先停一下讓大家猜，再按 → 揭曉。</li>
+    <li>笑點之外可以補一句：你們幫客戶做行前提醒的時候，這種清單網站也做得出來（點到為止）。</li>
+  </aside>
+</section>
+
+<!-- 旅遊｜上一次家族旅行 -->
+<section class="slide night" data-section="03 旅遊">
+  <div class="meta"><span class="stamp">8/30 週日　13:26 → 23:54</span><span>03 旅遊</span></div>
+  <div class="wrap">
+    <h2 class="r">上一次是家族旅行，問題更多</h2>
+    <div class="chat">
+      <div class="msg me r d1"><span class="who">我　13:26</span>「我們家本來要去普吉島，但普吉島的機票一直沒有出來…普吉島跟檳城，哪一個更適合我們這次年末 12 月 28 號以後的一週旅行？」</div>
+      <div class="msg me step"><span class="who">我　13:57</span>「安排時需要同時考量到不打匹克球的媽媽和哥哥，或者是有什麼樣的訓練營，可以讓我跟愛打匹克球的爸爸去參加。」</div>
+      <div class="msg me step"><span class="who">我　23:54</span>「這樣不行，你要做得像是旅行社廣告　幾天幾頁　場景都要用真實的照片插入增加可信度」</div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>一家人想要的都不一樣：爸爸跟我想打球，媽媽和哥哥只想放空。</li>
+    <li>第一版它做成日式雜誌風，我不喜歡，直接說「要像旅行社廣告」，加真實照片。</li>
+  </aside>
+</section>
+
+<!-- 旅遊｜猜猜看 -->
+<section class="slide night" data-section="03 旅遊">
+  <div class="meta"><span class="stamp">9/05　做成一張比較圖</span><span>03 旅遊</span></div>
+  <div class="wrap">
+    <div class="two wide-left">
+      <div class="reveal-wrap r" data-reveal>
+        <img class="shot tall" src="assets/travel-cebu-compare.jpg" alt="比較圖：檳城、普吉島、宿霧加邦勞三地，用匹克球、海島感、交通、年末四項打分">
+        <span class="cover" style="left:86.5%;top:25.6%;width:9.5%;height:3.8%">？</span>
+      </div>
+      <div class="stack">
+        <h2 class="r d1">猜猜看，<br>我們家最後選哪裡？</h2>
+        <p class="lead step">宿霧＋邦勞。沒有明顯短板：爸爸跟我能打球，媽媽跟哥哥能放空，台北直飛約 3 小時。</p>
+        <p class="small step">後來爸媽改買了 1/4 出發的機票，行程又重排了一次。圖上是當時的版本，價格是 9/5 查的估算。</p>
+      </div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>先讓台下舉手猜：檳城、普吉島、宿霧。按 → 揭曉，貼紙會掀開。</li>
+    <li>（你來講）家人看到這張圖的反應。</li>
+  </aside>
+</section>
+
+<!-- 旅遊｜指令積木 -->
+<section class="slide night" data-section="03 旅遊">
+  <div class="meta"><span class="stamp">今晚就能試</span><span>03 旅遊</span></div>
+  <div class="wrap">
+    <div class="two even">
+      <div class="stack">
+        <h2 class="r">家族群組吵不完的行程，<br>先丟給它當第三方</h2>
+        <div class="chat"><div class="msg me r d1"><span class="who">我　9/15　21:02</span>「這是我們的家庭群組討論　在薄荷島四天，宿務一天會不會很奇怪？」</div></div>
+        <p class="small r d2">把群組對話整段貼上，它會看出每個人在意什麼。</p>
+      </div>
+      <div class="builder r d2" data-builder>
+        <span class="label">今晚就能試｜指令積木</span>
+        <p class="sentence">我們<select><option>一家五口</option><option>四個朋友</option><option>夫妻兩人</option></select>想在<select><option>12 月</option><option>過年</option><option>暑假</option></select>出國，幫我比較<select><option>兩個</option><option>三個</option></select>地點，做成一張可以丟到群組的比較圖。</p>
+        <p class="rule">守則：價格寫明是估算和查詢日期，還沒確定的寫「待確認」。</p>
+        <button type="button">複製這句</button>
+      </div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>手機 ChatGPT 就能做比較圖。想做成像關西那樣的網站，再用 Codex。</li>
+  </aside>
+</section>
+
+<!-- ============================================================
+     收尾｜四個動作
+     ============================================================ -->
+<section class="slide night" data-section="收尾">
+  <div class="meta"><span class="stamp">三件事的共同點</span><span>收尾</span></div>
+  <div class="wrap">
+    <h2 class="r">三件事，我都用這四個動作跟它講話</h2>
+    <div class="cards c4">
+      <div class="card-dark r d1"><span class="num">1</span><h3>先講卡在哪</h3><p class="small">「普吉島的機票一直沒有出來」</p></div>
+      <div class="card-dark r d2"><span class="num">2</span><h3>不喜歡就直接嫌</h3><p class="small">「太多線了，沒意義」<br>「這樣不行，你要做得像是旅行社廣告」</p></div>
+      <div class="card-dark r d3"><span class="num">3</span><h3>用自己的標準驗收</h3><p class="small">「實際打開接手編輯，不要只驗證檔案」</p></div>
+      <div class="card-dark r d4"><span class="num">4</span><h3>做順了就存起來</h3><p class="small">「請你把我們今天的討論整理成一個新的專案」</p></div>
+    </div>
+    <p class="lead step">這四句，明天你也能照著講。</p>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>四句都是剛剛出現過的原話，帶大家回想一次。</li>
+    <li>第 4 點就是你們學過的 skill：看盤那天我請它整理成一個專案，之後換 AI 也能接手。</li>
+  </aside>
+</section>
+
+<!-- 收尾｜另外兩件 -->
+<section class="slide night" data-section="收尾">
+  <div class="meta"><span class="stamp">今天沒講的兩件</span><span>收尾</span></div>
+  <div class="wrap">
+    <h2 class="r">另外兩件，下課想聽再來抓我</h2>
+    <div class="cards c2">
+      <div class="card-dark r d1"><span class="num">會議紀錄</span><p>錄音丟進去，出來會議紀錄和下一步。你們第一堂就做過。</p></div>
+      <div class="card-dark r d2"><span class="num">匹克球網站</span><p>排程找最新影片 → 寫成文章上架 → 做成字卡、發 LINE 社群 → 辦訓練營、開箱球拍。</p></div>
+    </div>
+  </div>
+  <div class="city"></div>
+  <aside class="notes">
+    <li>匹克島那條線可以簡單講：一支影片變成文章、字卡、社群貼文，最後帶到訓練營。</li>
+  </aside>
+</section>
+
+<!-- 收尾｜結尾 -->
+<section class="slide dusk" data-section="收尾">
+  <div class="ghost-clock r">18:30</div>
+  <div class="wrap">
+    <p class="kicker r">今晚下班之後</p>
+    <h1 class="mega r d1">挑一件生活裡的麻煩，<br>丟給它試試看</h1>
+    <p class="lead r d2">做出來了，傳到群組給我看。</p>
+  </div>
+  <div class="city"></div>
+  <span class="win" style="left:11%;bottom:5vh"></span><span class="win" style="left:25.5%;bottom:9vh"></span><span class="win" style="left:42%;bottom:13vh"></span><span class="win" style="left:74.5%;bottom:8vh"></span><span class="win" style="left:91%;bottom:6vh"></span>
+  <aside class="notes">
+    <li>三個積木都在前面，回家打開這份簡報就能複製。</li>
+    <li>收在「傳到群組給我看」，讓下課後還有互動。</li>
+  </aside>
+</section>
+
+</main>
+
+<!-- 導覽列 -->
+<div class="progress" id="progress"></div>
+<div class="hud" aria-label="簡報導覽">
+  <span id="counter">1 / 1</span>
+  <button type="button" id="prevBtn" aria-label="上一張">‹</button>
+  <button type="button" id="nextBtn" aria-label="下一張">›</button>
+  <button type="button" id="notesBtn" aria-label="講者備註（N）">N</button>
+</div>
+<div class="notes-panel" id="notesPanel" aria-live="polite"></div>
+
+<script>
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   → / 空白 / PageDown：下一步（同張的 .step 先一句一句出來）
+   ← / PageUp：上一步　Home / End：第一／最後一張
+   N：講者備註　F：全螢幕　B：切換前後對照
+   網址 #12 會記住目前張數，重新整理不會跳回第一張
+   =========================================== */
+class SlidePresentation {
+  constructor() {
+    this.slides = [...document.querySelectorAll('.deck .slide')];
+    this.i = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 || 0, 0), this.slides.length - 1);
+    this.progress = document.getElementById('progress');
+    this.counter = document.getElementById('counter');
+    this.notesPanel = document.getElementById('notesPanel');
+    this.show(this.i, false);
+    this.bindKeys(); this.bindTouch(); this.bindWheel(); this.bindButtons();
+  }
+  steps(s) { return [...s.querySelectorAll('.step')]; }
+  show(n, fromBack) {
+    this.slides.forEach((s, k) => s.classList.toggle('active', k === n));
+    this.i = n;
+    const s = this.slides[n];
+    // 從後面退回來時，該張的步驟全部顯示；往前進入時全部收起
+    this.steps(s).forEach(el => el.classList.toggle('on', !!fromBack));
+    const rv = s.querySelector('[data-reveal]'); if (rv) rv.classList.toggle('open', !!fromBack);
+    this.progress.style.width = ((n + 1) / this.slides.length * 100) + '%';
+    this.counter.textContent = (n + 1) + ' / ' + this.slides.length;
+    history.replaceState(null, '', '#' + (n + 1));
+    this.renderNotes();
+  }
+  next() {
+    const s = this.slides[this.i];
+    const hidden = this.steps(s).find(el => !el.classList.contains('on'));
+    if (hidden) {
+      hidden.classList.add('on');
+      // 猜猜看：第一步揭曉時一起掀開貼紙
+      const rv = s.querySelector('[data-reveal]'); if (rv) rv.classList.add('open');
+      return;
+    }
+    if (this.i < this.slides.length - 1) this.show(this.i + 1, false);
+  }
+  prev() {
+    const shown = this.steps(this.slides[this.i]).filter(el => el.classList.contains('on'));
+    if (shown.length) { shown[shown.length - 1].classList.remove('on'); return; }
+    if (this.i > 0) this.show(this.i - 1, true);
+  }
+  renderNotes() {
+    const items = this.slides[this.i].querySelector('.notes');
+    this.notesPanel.innerHTML = '<h4>講者備註｜' + (this.i + 1) + '／' + this.slides.length + '　' + (this.slides[this.i].dataset.section || '') + '</h4><ul>' + (items ? items.innerHTML : '') + '</ul>';
+  }
+  bindKeys() {
+    document.addEventListener('keydown', e => {
+      const tag = (e.target.tagName || '').toLowerCase();
+      if (tag === 'select' || tag === 'input' || tag === 'textarea') return;
+      const k = e.key;
+      if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'Enter'].includes(k)) { e.preventDefault(); this.next(); }
+      else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { e.preventDefault(); this.prev(); }
+      else if (k === 'Home') this.show(0, false);
+      else if (k === 'End') this.show(this.slides.length - 1, false);
+      else if (k === 'n' || k === 'N') this.notesPanel.classList.toggle('show');
+      else if (k === 'f' || k === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+      else if (k === 'b' || k === 'B') { const ba = this.slides[this.i].querySelector('[data-ba]'); if (ba) toggleBA(ba); }
+    });
+  }
+  bindTouch() {
+    let x0 = null;
+    document.addEventListener('touchstart', e => { if (e.target.closest('[data-ba], .builder')) return; x0 = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', e => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 50) dx < 0 ? this.next() : this.prev();
+    });
+  }
+  bindWheel() {
+    let lock = false;
+    document.addEventListener('wheel', e => {
+      if (lock || Math.abs(e.deltaY) < 30 || e.target.closest('.notes-panel')) return;
+      lock = true; setTimeout(() => lock = false, 650);
+      e.deltaY > 0 ? this.next() : this.prev();
+    }, { passive: true });
+  }
+  bindButtons() {
+    document.getElementById('nextBtn').onclick = () => this.next();
+    document.getElementById('prevBtn').onclick = () => this.prev();
+    document.getElementById('notesBtn').onclick = () => this.notesPanel.classList.toggle('show');
+  }
+}
+
+/* ===========================================
+   前後對照滑桿：拖曳改 --pos
+   =========================================== */
+function setBA(ba, pct) { ba.style.setProperty('--pos', Math.min(100, Math.max(0, pct)) + '%'); }
+function toggleBA(ba) { const cur = parseFloat(getComputedStyle(ba).getPropertyValue('--pos')) || 50; setBA(ba, cur > 50 ? 0 : 100); }
+document.querySelectorAll('[data-ba]').forEach(ba => {
+  let drag = false;
+  const move = x => { const r = ba.getBoundingClientRect(); setBA(ba, (x - r.left) / r.width * 100); };
+  ba.addEventListener('pointerdown', e => { drag = true; ba.setPointerCapture(e.pointerId); move(e.clientX); });
+  ba.addEventListener('pointermove', e => { if (drag) move(e.clientX); });
+  ba.addEventListener('pointerup', () => { drag = false; });
+});
+
+/* ===========================================
+   指令積木：把選好的句子連同守則複製到剪貼簿
+   =========================================== */
+document.querySelectorAll('[data-builder]').forEach(b => {
+  const btn = b.querySelector('button');
+  btn.addEventListener('click', async () => {
+    const sentence = [...b.querySelector('.sentence').childNodes].map(n => n.nodeType === 3 ? n.textContent : (n.value || n.textContent)).join('').replace(/\s+/g, ' ').trim();
+    const rule = b.querySelector('.rule').textContent.replace(/^守則：/, '').trim();
+    const text = sentence + '\n' + rule;
+    try { await navigator.clipboard.writeText(text); }
+    catch (err) { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+    btn.textContent = '已複製，貼到 ChatGPT 或 Codex'; btn.classList.add('done');
+    setTimeout(() => { btn.textContent = '複製這句'; btn.classList.remove('done'); }, 2200);
+    btn.blur();
+  });
+  b.querySelectorAll('select').forEach(s => s.addEventListener('change', () => s.blur()));
+});
+
+new SlidePresentation();
+</script>
+</body>
+</html>
