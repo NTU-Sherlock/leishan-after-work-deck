@@ -245,9 +245,8 @@ figcaption { font-size: var(--small); color: var(--muted); line-height: 1.5; }
 .slide.active .chartwrap .scan { animation: scan 2.2s var(--snap) 0.4s both; }
 @keyframes scan { to { left: 105%; } }
 .mark { position: absolute; left: var(--x); top: var(--y); width: var(--w); height: var(--h); border: 2.5px solid var(--orange); border-radius: 8px; box-shadow: 0 0 0 4000px rgba(0,0,0,0); opacity: 0; transform: scale(1.3); }
-.mark.on { opacity: 1; transform: none; transition: 0.6s var(--ease); animation: pulse 2s 0.6s infinite; }
+.mark.on { opacity: 1; transform: none; transition: 0.6s var(--ease); }
 .mark.line { height: 0; border-width: 2px 0 0; border-style: dashed; border-radius: 0; }
-@keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(232,157,79,0.25); } }
 .mark span { position: absolute; white-space: nowrap; font: 700 var(--small) var(--body); background: var(--orange); color: #1f2530; padding: 0.3em 0.75em; border-radius: 99px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
 .mark.t span { bottom: calc(100% + 8px); right: 0; }
 .mark.b span { top: calc(100% + 8px); right: 0; }
@@ -404,8 +403,8 @@ html.qa .stampbox.hit .hilite, html.calm .stampbox.hit .hilite { width: 84%; }
   <div class="wrap">
     <div class="clock" data-roll="18:30" style="position:absolute;right:4vw;top:7vh">18:30</div>
     <p class="kicker r">打卡之後　·　AFTER WORK</p>
-    <h1 class="mega kin" style="--kd:.35s">下班後，<br>我用 AI 做的三件事</h1>
-    <p class="lead r" style="--d:5">看盤、剪片、排旅遊，三件都是我自己的生活。<br><span class="small" style="color:var(--cream-2)">文宣 × Codex　｜　磊山社團課　2026.11.27</span></p>
+    <h1 class="mega kin" style="--kd:.35s">下班後的<br>AI 實驗室</h1>
+    <p class="lead r" style="--d: 5; font-size: min(2.291vw, 3.758vh);">除了工作，AI還能怎麼融入生活？<br><span class="small" style="color:var(--cream-2)">文宣 × Codex　｜　磊山社團課　2026.11.27</span></p>
   </div>
   <aside class="notes">
     <li>先按 F 全螢幕。→／空白鍵往下；同一張的東西會一個一個出來；Codex 打字時再按一下會直接打完。← 退回，N 備註，M 關掉所有動畫。</li>
@@ -416,12 +415,12 @@ html.qa .stampbox.hit .hilite, html.calm .stampbox.hit .hilite { width: 84%; }
 
 <section class="slide" data-sky="dusk" data-trans="rise" data-stamp="作業回覆　9 月～10 月" data-sec="開場">
   <div class="wrap">
-    <h2 class="kin">你們上課說過、作業寫過的兩句話</h2>
+    <h2 class="kin">記得之前你們對AI的想法嗎？</h2>
     <div class="cards c2">
       <div class="panel r" style="--d:2"><p class="quote">「每天可以看，通知我知道美元的匯率的走勢」<span class="src">10/2 社團課，一位同學</span></p></div>
       <div class="panel r" style="--d:3"><p class="quote">「AI真的強到太可怕了，這兩天幾乎每天五小時容量連續用完…實在太過癮了」<span class="src">作業 #2，一位同學</span></p></div>
     </div>
-    <p class="lead step">今天這堂，我分享自己下班後拿 Codex 做的事。</p>
+    <p class="lead step">今天這堂課，我會分享自己下班都用AI做什麼？</p>
   </div>
   <aside class="notes">
     <li>念這兩句，問台下：「這是誰寫的？」笑一下就好，不用點名。</li>
@@ -431,15 +430,15 @@ html.qa .stampbox.hit .hilite, html.calm .stampbox.hit .hilite { width: 84%; }
 
 <section class="slide" data-sky="dusk" data-trans="rise" data-stamp="文宣的下班清單" data-sec="開場">
   <div class="wrap">
-    <h2 class="kin">我下班後拿 Codex 做的五件事</h2>
+    <h2 class="kin">下班後的 AI 實驗室</h2>
     <ol class="five r" style="--d:3" id="fiveList">
-      <li><b>1</b>看盤：請它陪我盯走勢、幫我挑毛病<span class="tag o pick">今天講</span></li>
-      <li><b>2</b>剪片：線上直播錄完，交給它跟剪映<span class="tag o pick">今天講</span></li>
+      <li><b>1</b>看盤：請它陪我盯走勢、幫我挑毛病</li>
+      <li><b>2</b>剪片：線上直播錄完，交給它跟剪映</li>
       <li class="off"><b>3</b>整理會議紀錄<span class="note">第一堂教過了</span></li>
-      <li><b>4</b>排旅遊：家族旅行、朋友出國<span class="tag o pick">今天講</span></li>
-      <li class="off"><b>5</b>匹克球部落格網站<span class="note">下課想聽再抓我</span></li>
+      <li><b>4</b>排旅遊：家族旅行、朋友出國</li>
+      <li class="off"><b>5</b>匹克球部落格網站<span class="note">下課想聽再聊聊</span></li>
     </ol>
-    <p class="lead step" data-add="#fiveList:picked">今天挑你們最可能用到的三件。</p>
+    
   </div>
   <aside class="notes">
     <li>按 → 會把今天要講的三件亮起來。</li>
@@ -454,25 +453,70 @@ html.qa .stampbox.hit .hilite, html.calm .stampbox.hit .hilite { width: 84%; }
   <div class="bignum">01</div>
   <div class="wrap">
     <div class="clock" data-roll="23:22" style="position:absolute;right:4vw;top:7vh">23:22</div>
-    <p class="kicker r">01　看盤</p>
-    <h1 class="mega kin" style="--kd:.3s">請 AI 陪我盯盤</h1>
-    <p class="lead r" style="--d:4">11/21 到 11/25 這五天，我把看盤交給 Codex 一起做。</p>
-    <p class="disclaimer r" style="--d:5">以下是我自己的學習紀錄，不構成投資建議。AI 負責看圖、畫線、算數字、給參考；要不要買、什麼時候買，都是我自己決定，它沒有幫我下單。</p>
+    <p class="kicker r" style="font-size: min(1.896vw, 4vh);">01　投資看盤</p>
+    <h1 class="mega kin" style="--kd: .3s; font-size: min(5.363vw, 11.314vh);">請 AI 陪我盯盤</h1>
+    <p class="lead r" style="--d:4">分享一個我自己的 AI 盯盤案例。</p>
+    
   </div>
   <aside class="notes">
     <li>先講免責：學習紀錄，AI 不碰下單。</li>
-    <li>接下來先給你們看成果。</li>
+    <li>接下來先丟一個懸念，再從 11/21 第一句話講起。</li>
   </aside>
 </section>
 
+<section class="slide suspense" data-sky="deep" data-trans="fade" data-stamp="11/23 週一　深夜" data-sec="01 看盤">
+  <div class="wrap center" style="justify-content:center">
+    <p class="line autotype">請AI幫忙盯盤交易可以？</p>
+    <p class="lead step" style="color:var(--muted)">帶你看看我的實際使用案例。</p>
+  </div>
+  <aside class="notes">
+    <li>停一拍。這句會自己打出來。</li>
+    <li>按 → 出現下一句，留懸念，先不講答案。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="rise" data-stamp="為什麼重要" data-sec="01 看盤">
+  <div class="wrap">
+    
+    <h2 class="kin">總是下班才有空看盤，，所以我讓 AI 助理...</h2>
+    <div class="cards c3">
+      <div class="panel r" style="--d:3"><span class="num">幫我盯</span><p>每 5 分鐘回報一次，我可以去忙別的。</p></div>
+      <div class="panel r" style="--d:4"><span class="num">挑毛病</span><p>請它「批判性思考」，幫我看看這筆交易有沒有<br>問題。</p></div>
+      <div class="panel r" style="--d:5"><span class="num">先問它</span><p>下單前請它算：最多賠多少、可能賺多少。</p></div>
+    </div>
+    
+  </div>
+  <aside class="notes">
+    <li>台下大多沒碰過加密貨幣，三個詞先講白話。</li>
+    <li>為什麼用以太幣練：上班時間沒空看台股，它 24 小時都開。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="blinds" data-stamp="11/21 週六　14:31" data-sec="01 看盤">
+  <div class="wrap">
+    
+    <h2 class="kin">一開始，我連要用哪個軟體都不知道</h2>
+    <div class="chat">
+      <div class="msg me step"><span class="who">我　14:31</span><span class="t">「我以前有用過 tradingview, 我不確定現在最適合我的看盤軟體是什麼，最好有 ai native, 能讓我跟 ai 同步討論、測試交易策略、以及快速做交易？」</span><span class="gloss">TradingView：最多人用的看盤網站。ai native：一開始就為 AI 設計的。</span></div>
+      <div class="msg sum step"><span class="who">Codex（摘要）</span><span class="t">比較了幾套看盤軟體，還提議幫我從頭做一個自己的看板。</span></div>
+      <div class="msg me step"><span class="who">我　15:10</span><span class="t">「我覺得自幹一個 dashboard 不太合理…dashboard 還是用 trading view，但是agent 要能代替我在 trading view 上做標記…自動幫我劃線」</span><span class="gloss">dashboard：自己做的看板。agent：會自己動手做事的 AI。</span></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>第一個提案我不喜歡，就直接講我要的樣子。</li>
+  </aside>
+</section>
+
+
+
 <section class="slide" data-sky="night" data-trans="zoom" data-stamp="11/21 週六　16:05" data-sec="01 看盤">
   <div class="wrap">
-    <p class="phase r">成果</p>
-    <h2 class="kin">這張圖上的框、線和筆記，都是 AI 畫的</h2>
+    
+    <h2 class="kin" style="translate: 1.9vw -0.93vh;">讓AI結合我的看盤軟體，直接標示看圖重點：</h2>
     <div class="chartwrap r" style="--d:2">
       <img src="assets/stock-position.jpg" alt="TradingView 價格圖，AI 放上了買賣框、支撐壓力線與分析筆記">
       <div class="scan"></div>
-      <div class="mark step b" style="--x:84.2%;--y:59.5%;--w:12.2%;--h:17%"><span>買賣框：進場、停損、停利</span></div>
+      <div class="mark step b" style="--x:84.2%;--y:59.5%;--w:12.2%;--h:17%"><span>進場、停損、停利</span></div>
       <div class="mark line step l" style="--x:1%;--y:71.4%;--w:80%;--h:0"><span>支撐、壓力線</span></div>
       <div class="mark step t" style="--x:42.6%;--y:19.6%;--w:32.2%;--h:20.5%"><span>寫在圖上的分析筆記</span></div>
     </div>
@@ -483,14 +527,64 @@ html.qa .stampbox.hit .hilite, html.calm .stampbox.hit .hilite { width: 84%; }
   </aside>
 </section>
 
+<section class="slide" data-sky="deep" data-trans="rise" data-stamp="11/23 週一　23:22" data-sec="01 看盤">
+  <div class="wrap">
+    <div class="clock" style="position:absolute;right:4vw;top:7vh;color:rgba(255,248,239,.07)">23:22</div>
+    
+    <h2 class="kin">某天晚上，我買了以太幣，接著讓它幫我評估這次的操作：</h2>
+    <div class="chat">
+      <div class="msg me step"><span class="who">我　23:22</span><span class="t">「我剛在 1785 進場了，請幫我評論這個操作以及批判性思考」</span></div>
+      <div class="msg ai step"><span class="who">Codex　23:23</span><span class="t">「這筆可以用『跌深後搶反彈』來解釋，但當成突破單，進場偏早。」</span><span class="dots"><i></i><i></i><i></i></span></div>
+      <div class="msg ai step"><span class="who">Codex　23:23</span><span class="t">「第一道壓力離進場太近。」</span><span class="gloss">白話：往上能賺的空間大約 5 塊，往下可能賠 15 塊。</span><span class="dots"><i></i><i></i><i></i></span></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>1785 是我買進的價格。它直接講我買太早，往上能賺的空間太小。我要它做的就是這個：挑毛病。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="deep" data-trans="zoom" data-stamp="11/23 週一　23:35" data-sec="01 看盤">
+  <div class="wrap">
+    <div class="two wl">
+      <figure class="r"><img class="shot" src="assets/stock-eth-1785.jpg" alt="以太幣五分鐘價格圖，標有我買進的 1785 與底下 1,771.96 的前低線"><figcaption>左下「成交 1785」是我買的位置。最下面那條 1,771.96 是前低，也就是地板。</figcaption></figure>
+      <div class="stack">
+        
+        <h2 class="kin">接著把之後的決策計劃做成圖：</h2>
+        <div class="chat">
+          <div class="msg ai step"><span class="who">Codex　23:34</span><span class="t">「若 1,771.96 的前低也失守，原本的短線反彈假設失效。」</span><span class="dots"><i></i><i></i><i></i></span></div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <li>「失守」就是跌破。（你的回想）我把停損設在這條前低附近。有沒有用上，下一張揭曉。</li>
+  </aside>
+</section>
+
+<section class="slide" data-sky="night" data-trans="iris" data-stamp="揭曉" data-sec="01 看盤">
+  <div class="wrap">
+    <h2 class="kin">後來價格果真持續下跌。幸好我先設定了停損，沒有更多損失：</h2>
+    <div class="cards c2">
+      
+      <div class="panel r" style="--d:5"><h3 style="font-size: min(1.788vw, 3.771vh); color: var(--orange);">下次也可以試試：</h3><p class="mint">請 AI當反方，提示我們有無風險。</p></div>
+    </div>
+    <p class="lead step" style="translate: 0.49vw 0.38vh;">任何情境都試試看，買房、買車、換工作前，也可以先請它當反方。</p>
+  </div>
+  <aside class="notes">
+    <li>揭曉：我有聽。它先講我買太早、再畫出地板，我照著設好停損。（你來講當下的心情）</li>
+    <li>可以接一句：你們每天都在幫客戶先想「萬一」，請 AI 當反方是同一件事。</li>
+  </aside>
+</section>
+
 <section class="slide" data-sky="night" data-trans="rise" data-stamp="11/21 → 11/25" data-sec="01 看盤">
   <div class="wrap">
-    <p class="phase r">成果</p>
-    <h2 class="kin">五天裡，它幫我做了這些</h2>
-    <div class="counter-wall">
-      <div class="panel counter r" style="--d:2"><span class="n" data-count="2">2</span><span class="u">次沒回應</span><p>它就自己停下來，因為我睡著了</p></div>
+    
+    <h2 class="kin" style="translate: 14.12vw -1vh;">AI 可以模擬、即時盯盤、呈現報告也更直覺：</h2>
+    <div class="counter-wall" style="text-align: left; scale: 0.918; translate: 11.06vw -0.43vh;">
+      
       <div class="panel counter r" style="--d:3"><span class="n" data-count="5">5</span><span class="u">分鐘</span><p>盯一次盤，回報給我：觀察、建議進場點、停損停利</p></div>
-      <div class="panel counter r" style="--d:4"><span class="n" data-count="8928">8,928</span><span class="u">筆價格</span><p>一個月的資料，一句話就拿來模擬「當時照這個方法做會怎樣」</p></div>
+      <div class="panel counter r" style="--d:4"><span class="n" data-count="8928">8,928</span><span class="u">筆價格</span><p>用一個月的資料來模擬「當時照這個方法做會怎樣」</p></div>
       <div class="panel counter r" style="--d:5"><span class="n" data-count="61">61</span><span class="u">天的資料</span><p>做成一份新手也看得懂的互動報告</p><a class="btn-live" href="assets/demo-btc-report.html" target="_blank" rel="noopener">現場打開 ↗</a></div>
     </div>
   </div>
@@ -500,72 +594,19 @@ html.qa .stampbox.hit .hilite, html.calm .stampbox.hit .hilite { width: 84%; }
   </aside>
 </section>
 
-<section class="slide suspense" data-sky="deep" data-trans="fade" data-stamp="11/23 週一　深夜" data-sec="01 看盤">
-  <div class="wrap center" style="justify-content:center">
-    <p class="line autotype">我買進後問它，它說太早了。</p>
-    <p class="lead step" style="color:var(--muted)">當天晚上，價格真的大跌。<br>我有沒有聽它的？最後揭曉。</p>
-  </div>
-  <aside class="notes">
-    <li>停一拍。這句會自己打出來。</li>
-    <li>按 → 出現下一句，留懸念，先不講答案。</li>
-  </aside>
-</section>
-
-<section class="slide" data-sky="night" data-trans="rise" data-stamp="為什麼重要" data-sec="01 看盤">
-  <div class="wrap">
-    <p class="phase r">為什麼重要</p>
-    <h2 class="kin">下班才有空看盤。<br>一個人看圖，只看得到自己想看的</h2>
-    <div class="cards c3">
-      <div class="panel r" style="--d:3"><span class="num">幫我盯</span><p>每 5 分鐘回報一次，我可以去忙別的；我睡了它就停。</p></div>
-      <div class="panel r" style="--d:4"><span class="num">挑毛病</span><p>我請它「批判性思考」，它就要找我這筆單的問題。</p></div>
-      <div class="panel r" style="--d:5"><span class="num">先問它</span><p>下單前請它算：最多賠多少、可能賺多少。</p></div>
-    </div>
-    <p class="small r" style="--d:6">三個詞先講好：<b class="mint">以太幣</b>＝一種 24 小時交易的加密貨幣　<b class="mint">前低</b>＝最近一次跌到的最低價，像地板　<b class="mint">停損</b>＝買之前先決定跌到哪裡就賣</p>
-  </div>
-  <aside class="notes">
-    <li>台下大多沒碰過加密貨幣，三個詞先講白話。</li>
-    <li>為什麼用以太幣練：上班時間沒空看台股，它 24 小時都開。</li>
-  </aside>
-</section>
-
 <section class="slide" data-sky="night" data-trans="rise" data-stamp="我怎麼做" data-sec="01 看盤">
   <div class="wrap">
-    <p class="phase r">我怎麼做</p>
-    <h2 class="kin">四個步驟，都是邊用邊講出來的</h2>
+    
+    <h2 class="kin">讓AI幫你看盤的四個技巧：</h2>
     <div class="path">
-      <div class="node r" style="--d:3"><span class="dot">1</span><h3>用我原本的看盤網站</h3><p>TradingView 我本來就在用。它提議另外做一個看板，我說不要，直接在我的圖上畫。</p></div>
-      <div class="node r" style="--d:4"><span class="dot">2</span><h3>嫌它，直到看得懂</h3><p>五條線太亂，我說「太多線了」。最後只留進場、停損、停利。</p></div>
-      <div class="node r" style="--d:5"><span class="dot">3</span><h3>設好提醒，讓它盯</h3><p>每 5 分鐘看一次；連兩次沒回應就自己停。</p></div>
-      <div class="node r" style="--d:6"><span class="dot">4</span><h3>做順了，存成專案</h3><p>請它把當天的討論整理成一個專案，下次一句話叫回來。</p></div>
+      <div class="node r" style="--d:3"><span class="dot">1</span><h3>看看自己原本的看盤軟體有沒有AI？</h3><p>我當時是用 TradingView 。於是我讓 AI 試試直接在我熟悉的平台上畫圖，就不用熟悉另一套機制。</p></div>
+      <div class="node r" style="--d:4"><span class="dot">2</span><h3>不斷鞭策它，直到看得懂</h3><p>五條線太亂，我說「太多線了」。最後只留進場、停損、停利。</p></div>
+      <div class="node r" style="--d:5"><span class="dot">3</span><h3>設置提醒，讓ＡＩ替你盯盤</h3><p>當時我設定每 5 分鐘看一次。<br>但不要讓AI替你交易，AI 能輔助你，但不要讓它取代你的大腦。</p></div>
+      <div class="node r" style="--d:6"><span class="dot">4</span><h3>存成專案就能長期使用</h3><p>請它把當天的討論整理成一個專案，就能重複使用。</p></div>
     </div>
   </div>
   <aside class="notes">
     <li>第 4 步就是你們學過的 skill：做順一次就存起來。</li>
-  </aside>
-</section>
-
-<section class="slide" data-sky="night" data-trans="zoom" data-stamp="11/21 週六　15:47" data-sec="01 看盤">
-  <div class="wrap">
-    <div class="two wl">
-      <div class="stack" style="align-items:flex-start">
-        <div class="ba auto r" data-ba="">
-          <img src="assets/stock-lines-before.jpg" alt="AI 第一版：在價格圖上畫了五條水平線，看起來很亂">
-          <img class="after" src="assets/stock-lines-after.jpg" alt="改完：只剩上下兩條線">
-          <span class="bar"></span><span class="knob">⇆</span>
-          <span class="lab l">第一版：五條線</span><span class="lab rt">改完：兩條</span>
-        </div>
-        <p class="small">拖曳中間的橘線比對（或按 B）</p>
-      </div>
-      <div class="stack">
-        <p class="phase r">我怎麼做</p>
-        <h2 class="kin">它畫了五條線，<br>我只回一句</h2>
-        <div class="chat"><div class="msg me r" style="--d:4"><span class="who">我　15:47</span>「太多線了，沒意義，應該要提供進出場建議，盈虧比計算」</div></div>
-        <p class="small r" style="--d:5">盈虧比：可能賺的空間 ÷ 可能賠的空間。數字越大，這筆越划算。</p>
-      </div>
-    </div>
-  </div>
-  <aside class="notes">
-    <li>滑桿會自己左右掃一次，也可以現場拖。</li>
   </aside>
 </section>
 
@@ -595,76 +636,11 @@ html.qa .stampbox.hit .hilite, html.calm .stampbox.hit .hilite { width: 84%; }
       <p class="rule">守則：請你當反方，直接講風險在哪。資料附來源，不確定就說不確定。</p>
       <button type="button">複製這句</button>
     </div>
-    <p class="small r" style="--d:4">「請你當反方」這句，等一下你就知道為什麼要加。這是給自己看的，不拿來當給客戶的建議。</p>
+    <p class="small r" style="--d:4">「請你當反方」這句，就是剛剛以太幣那次學到的。這是給自己看的，不拿來當給客戶的建議。</p>
   </div>
   <aside class="notes">
     <li>呼應開場那句「每天通知我美元匯率走勢」。</li>
     <li>ChatGPT 的排程功能可以設每天早上 8 點自動跑。</li>
-  </aside>
-</section>
-
-<section class="slide" data-sky="night" data-trans="blinds" data-stamp="11/21 週六　14:31" data-sec="01 看盤">
-  <div class="wrap">
-    <p class="phase r">真實對話 1／3</p>
-    <h2 class="kin">第一句話，我連要用哪個軟體都不知道</h2>
-    <div class="chat">
-      <div class="msg me step"><span class="who">我　14:31</span><span class="t">「我以前有用過 tradingview, 我不確定現在最適合我的看盤軟體是什麼，最好有 ai native, 能讓我跟 ai 同步討論、測試交易策略、以及快速做交易？」</span><span class="gloss">TradingView：最多人用的看盤網站。ai native：一開始就為 AI 設計的。</span></div>
-      <div class="msg sum step"><span class="who">Codex（摘要）</span><span class="t">比較了幾套看盤軟體，還提議幫我從頭做一個自己的看板。</span></div>
-      <div class="msg me step"><span class="who">我　15:10</span><span class="t">「我覺得自幹一個 dashboard 不太合理…dashboard 還是用 trading view，但是agent 要能代替我在 trading view 上做標記…自動幫我劃線」</span><span class="gloss">dashboard：自己做的看板。agent：會自己動手做事的 AI。</span></div>
-    </div>
-  </div>
-  <aside class="notes">
-    <li>第一個提案我不喜歡，就直接講我要的樣子。</li>
-  </aside>
-</section>
-
-<section class="slide" data-sky="deep" data-trans="rise" data-stamp="11/23 週一　23:22" data-sec="01 看盤">
-  <div class="wrap">
-    <div class="clock" style="position:absolute;right:4vw;top:7vh;color:rgba(255,248,239,.07)">23:22</div>
-    <p class="phase r">真實對話 2／3</p>
-    <h2 class="kin">週一晚上 11 點，我買了以太幣，<br>然後問它：我這筆買得好嗎？</h2>
-    <div class="chat">
-      <div class="msg me step"><span class="who">我　23:22</span><span class="t">「我剛在 1785 進場了，請幫我評論這個操作以及批判性思考」</span></div>
-      <div class="msg ai step"><span class="who">Codex　23:23</span><span class="t">「這筆可以用『跌深後搶反彈』來解釋，但當成突破單，進場偏早。」</span><span class="dots"><i></i><i></i><i></i></span></div>
-      <div class="msg ai step"><span class="who">Codex　23:23</span><span class="t">「第一道壓力離進場太近。」</span><span class="gloss">白話：往上能賺的空間大約 5 塊，往下可能賠 15 塊。</span><span class="dots"><i></i><i></i><i></i></span></div>
-    </div>
-  </div>
-  <aside class="notes">
-    <li>1785 是我買進的價格。它直接講我買太早，往上能賺的空間太小。我要它做的就是這個：挑毛病。</li>
-  </aside>
-</section>
-
-<section class="slide" data-sky="deep" data-trans="zoom" data-stamp="11/23 週一　23:35" data-sec="01 看盤">
-  <div class="wrap">
-    <div class="two wl">
-      <figure class="r"><img class="shot" src="assets/stock-eth-1785.jpg" alt="以太幣五分鐘價格圖，標有我買進的 1785 與底下 1,771.96 的前低線"><figcaption>左下「成交 1785」是我買的位置。最下面那條 1,771.96 是前低，也就是地板。</figcaption></figure>
-      <div class="stack">
-        <p class="phase r">真實對話 3／3</p>
-        <h2 class="kin">它在圖上畫了一條地板</h2>
-        <div class="chat">
-          <div class="msg ai step"><span class="who">Codex　23:34</span><span class="t">「若 1,771.96 的前低也失守，原本的短線反彈假設失效。」</span><span class="dots"><i></i><i></i><i></i></span></div>
-          <div class="msg me step"><span class="who">我　事後回想</span><span class="t">「還好我有聽 ai 的設好前低止損」</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <aside class="notes">
-    <li>「失守」就是跌破。（你的回想）我把停損設在這條前低附近。有沒有用上，下一張揭曉。</li>
-  </aside>
-</section>
-
-<section class="slide" data-sky="night" data-trans="iris" data-stamp="揭曉" data-sec="01 看盤">
-  <div class="wrap">
-    <h2 class="kin">我有聽它的。<br>它畫的地板，就是我的停損線</h2>
-    <div class="cards c2">
-      <div class="panel r" style="--d:4"><span class="num">1</span><h3>真的跌破，照計畫出場</h3><p>它一畫出地板，我就把停損設在那裡。當天晚上跌破時照計畫出場，沒有被套住。</p></div>
-      <div class="panel r" style="--d:5"><span class="num">2</span><h3>下次也先這樣問</h3><p class="mint">請你當反方，直接講風險在哪。</p><p class="small">就是剛剛積木裡那句守則。</p></div>
-    </div>
-    <p class="lead step">買房、買車、換工作前，也可以先請它當反方。</p>
-  </div>
-  <aside class="notes">
-    <li>揭曉：我有聽。它先講我買太早、再畫出地板，我照著設好停損。（你來講當下的心情）</li>
-    <li>可以接一句：你們每天都在幫客戶先想「萬一」，請 AI 當反方是同一件事。</li>
   </aside>
 </section>
 
