@@ -4,6 +4,7 @@
 
 ## 打開
 
+- **網址（任何電腦都能開）**：https://ntu-sherlock.github.io/leishan-after-work-deck/ 。推上 GitHub 後約 1 分鐘會更新。
 - **上台播放**：用 Chrome 打開 `index.html`。F 全螢幕，→／空白鍵往下，← 退回，N 看講者備註，M 關掉動畫。
 - **編輯**：用 Chrome 打開 `edit.html`，會直接進編輯器（等於在 `index.html` 網址後面加 `?edit`）。Safari 只能下載一份，存不回原檔。
 
