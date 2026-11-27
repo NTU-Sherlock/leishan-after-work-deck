@@ -5,7 +5,7 @@
 ## 打開
 
 - **上台播放**：用 Chrome 打開 `index.html`。F 全螢幕，→／空白鍵往下，← 退回，N 看講者備註，M 關掉動畫。
-- **編輯**：同一個網址後面加 `?edit`，例如 `file:///你的路徑/index.html?edit`。請用 Chrome；Safari 只能下載一份，存不回原檔。
+- **編輯**：用 Chrome 打開 `edit.html`，會直接進編輯器（等於在 `index.html` 網址後面加 `?edit`）。Safari 只能下載一份，存不回原檔。
 
 ## 編輯器怎麼用
 
